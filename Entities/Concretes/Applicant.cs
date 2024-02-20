@@ -8,9 +8,14 @@ namespace Entities.Concretes
 {
     public class Applicant : User
     {
-        public int InstructorId { get; set; }
         public string About { get; set; }
-
-        public Instructor Instructor { get; set; }
+        public Applicant()
+        {
+            
+        }
+        public Applicant(string about)
+        {
+            About = about;
+        }
     }
 }

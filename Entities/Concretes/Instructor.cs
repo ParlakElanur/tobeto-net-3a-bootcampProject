@@ -7,12 +7,15 @@ using System.Threading.Tasks;
 namespace Entities.Concretes
 {
     public class Instructor : User
-    {
+    {        
+        public string CompanyName { get; set; }
         public Instructor()
         {
-            Applicants = new HashSet<Applicant>();
+
         }
-        public string CompanyName { get; set; }
-        public ICollection<Applicant> Applicants { get; set; }
+        public Instructor(string companyName)
+        {
+            CompanyName = companyName;
+        }
     }
 }
