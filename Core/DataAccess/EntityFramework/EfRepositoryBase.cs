@@ -11,9 +11,10 @@ using System.Threading.Tasks;
 
 namespace Core.DataAccess.EntityFramework
 {
-    public class EfRepositoryBase<TEntity, TEntityId, TContext> : IAsyncRepository<TEntity, TEntityId>
+    public class EfRepositoryBase<TEntity, TEntityId, TContext> :  IAsyncRepository<TEntity, TEntityId>, ISyncRepository<TEntity, TEntityId>
         where TEntity : BaseEntity<TEntityId>
         where TContext : DbContext
+
     {
         protected readonly TContext Context;
         public EfRepositoryBase(TContext context)
@@ -21,6 +22,8 @@ namespace Core.DataAccess.EntityFramework
             Context = context;
         }
         public IQueryable<TEntity> Query() => Context.Set<TEntity>();
+        
+        //Asenkron methods
         public async Task<TEntity> AddAsync(TEntity entity)
         {
             entity.CreatedDate = DateTime.UtcNow;
@@ -61,6 +64,48 @@ namespace Core.DataAccess.EntityFramework
                 queryAble = queryAble.Where(predicate);
             return await queryAble.ToListAsync();
         }
-        
+
+        //Senkron methods
+        public List<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate = null, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null)
+        {
+            IQueryable<TEntity> queryAble = Query();
+            if (include != null)
+                queryAble = include(queryAble);
+            if (predicate != null)
+                queryAble = queryAble.Where(predicate);
+            return queryAble.ToList();
+        }
+
+        public TEntity Get(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null)
+        {
+            IQueryable<TEntity> queryAble = Query();
+            if (include != null)
+                queryAble = include(queryAble);
+
+            return queryAble.FirstOrDefault(predicate);
+        }
+
+        public TEntity Add(TEntity entity)
+        {
+            entity.CreatedDate = DateTime.UtcNow;
+            Context.Add(entity);
+            Context.SaveChanges();
+            return entity;
+        }
+
+        public TEntity Update(TEntity entity)
+        {
+            Context.Update(entity);
+            Context.SaveChanges();
+            return entity;
+        }
+
+        public TEntity Delete(TEntity entity)
+        {
+            entity.DeletedDate = DateTime.UtcNow;
+            Context.Remove(entity);
+            Context.SaveChanges();
+            return entity;
+        }
     }
 }
