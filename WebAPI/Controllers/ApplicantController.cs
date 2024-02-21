@@ -1,6 +1,6 @@
 ﻿using Business.Abstracts;
 using Business.Requests.Applicant;
-using Business.Responses;
+using Business.Responses.Applicant;
 using Entities.Concretes;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

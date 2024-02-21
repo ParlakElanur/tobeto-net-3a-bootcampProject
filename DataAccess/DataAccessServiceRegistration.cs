@@ -21,6 +21,10 @@ namespace DataAccess
                                    .GetConnectionString("TobetoNet3AConnectionString")));
 
             services.AddScoped<IApplicantRepository, ApplicantRepository>();
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            services.AddScoped<IInstructorRepository, InstructorRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+
             return services;
         }
         

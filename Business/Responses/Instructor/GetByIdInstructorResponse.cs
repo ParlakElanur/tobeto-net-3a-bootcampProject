@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Business.Responses
+namespace Business.Responses.Instructor
 {
-    public class UpdateApplicantResponse
+    public class GetByIdInstructorResponse
     {
         public int Id { get; set; }
         public DateTime CreatedDate { get; set; }
@@ -17,7 +17,6 @@ namespace Business.Responses
         public DateTime DateOfBirth { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public string About { get; set; }
+        public string CompanyName { get; set; }
     }
 }
-

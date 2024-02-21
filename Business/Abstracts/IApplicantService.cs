@@ -1,5 +1,5 @@
 ﻿using Business.Requests.Applicant;
-using Business.Responses;
+using Business.Responses.Applicant;
 using Entities.Concretes;
 using System;
 using System.Collections.Generic;

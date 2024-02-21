@@ -8,8 +8,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Abstracts
 {
-    public interface IApplicantRepository : IAsyncRepository<Applicant, int>
+    public interface IEmployeeRepository : IAsyncRepository<Employee, int>
     {
-
     }
 }

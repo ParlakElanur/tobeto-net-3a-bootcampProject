@@ -1,6 +1,6 @@
 ﻿using Business.Abstracts;
 using Business.Requests.Applicant;
-using Business.Responses;
+using Business.Responses.Applicant;
 using DataAccess.Abstracts;
 using Entities.Concretes;
 using System;
@@ -123,11 +123,11 @@ namespace Business.Concretes
         public async Task<List<GetAllApplicantResponse>> GetAllAsync()
         {
             List<Applicant> applicants = await _applicantRepository.GetAllAsync();
-            List<GetAllApplicantResponse> getAllApplicantResponse = new List<GetAllApplicantResponse>();
+            List<GetAllApplicantResponse> getAllApplicants = new List<GetAllApplicantResponse>();
 
             foreach (var applicant in applicants)
             {
-                getAllApplicantResponse.Add(new GetAllApplicantResponse()
+                getAllApplicants.Add(new GetAllApplicantResponse()
                 {
                     Id = applicant.Id,
                     CreatedDate = applicant.CreatedDate,
@@ -142,7 +142,7 @@ namespace Business.Concretes
                 });
             }
 
-            return getAllApplicantResponse;
+            return getAllApplicants;
         }
 
     }
