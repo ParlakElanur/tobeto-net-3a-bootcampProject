@@ -35,8 +35,8 @@ namespace WebAPI.Controllers
         {
             return await _instructorService.DeleteAsync(request);
         }
-        [HttpGet]
-        public async Task<List<GetAllInstructorResponse>> GetAll()
+        [HttpGet] 
+        public async Task<List<GetAllInstructorResponse>> GetAllAsync()
         {
             return await _instructorService.GetAllAsync();
         }
