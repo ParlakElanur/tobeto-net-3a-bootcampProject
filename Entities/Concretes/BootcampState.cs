@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,16 +7,18 @@ using System.Threading.Tasks;
 
 namespace Entities.Concretes
 {
-    public class Instructor : User
-    {        
-        public string CompanyName { get; set; }
-        public Instructor()
+    public class BootcampState : BaseEntity<int>
+    {
+        public string Name { get; set; }
+
+        public BootcampState()
         {
             Bootcamps=new HashSet<Bootcamp>();
         }
-        public Instructor(string companyName)
+
+        public BootcampState(string name)
         {
-            CompanyName = companyName;
+            Name = name;
         }
         public ICollection<Bootcamp> Bootcamps { get; set; }
     }

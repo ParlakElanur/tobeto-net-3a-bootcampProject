@@ -1,4 +1,5 @@
-﻿using Business.Abstracts;
+﻿using AutoMapper;
+using Business.Abstracts;
 using Business.Requests.Applicant;
 using Business.Responses.Applicant;
 using DataAccess.Abstracts;
@@ -14,133 +15,54 @@ namespace Business.Concretes
     public class ApplicantManager : IApplicantService
     {
         private readonly IApplicantRepository _applicantRepository;
+        private readonly IMapper _mapper;
 
-        public ApplicantManager(IApplicantRepository applicantRepository)
+        public ApplicantManager(IApplicantRepository applicantRepository, IMapper mapper)
         {
             _applicantRepository = applicantRepository;
+            _mapper = mapper;
         }
         public async Task<GetByIdApplicantResponse> GetAsync(int id)
         {
             Applicant applicant = await _applicantRepository.GetAsync(a => a.Id == id);
-            GetByIdApplicantResponse applicantResponse = new GetByIdApplicantResponse()
-            {
-                Id = applicant.Id,
-                CreatedDate = applicant.CreatedDate,
-                UpdatedDate = applicant.UpdatedDate,
-                UserName = applicant.UserName,
-                FirstName = applicant.FirstName,
-                LastName = applicant.LastName,
-                DateOfBirth = applicant.DateOfBirth,
-                Email = applicant.Email,
-                Password = applicant.Password,
-                About = applicant.About
-            };
+            GetByIdApplicantResponse applicantResponse = _mapper.Map<GetByIdApplicantResponse>(applicant);
+
             return applicantResponse;
         }
         public async Task<CreateApplicantResponse> AddAsync(CreateApplicantRequest request)
         {
-            Applicant applicant = new Applicant()
-            {
-                CreatedDate = DateTime.Now,
-                UserName = request.UserName,
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-                DateOfBirth = request.DateOfBirth,
-                Email = request.Email,
-                Password = request.Password,
-                About = request.About
-
-            };
+            Applicant applicant = _mapper.Map<Applicant>(request);
+            applicant.CreatedDate = DateTime.UtcNow;
             await _applicantRepository.AddAsync(applicant);
 
-            CreateApplicantResponse applicantResponse = new CreateApplicantResponse()
-            {
-                Id = applicant.Id,
-                CreatedDate = applicant.CreatedDate,
-                UserName = applicant.UserName,
-                FirstName = applicant.FirstName,
-                LastName = applicant.LastName,
-                DateOfBirth = applicant.DateOfBirth,
-                Email = applicant.Email,
-                Password = applicant.Password,
-                About = applicant.About
-            };
-            return applicantResponse;
+            CreateApplicantResponse applicantResponse = _mapper.Map<CreateApplicantResponse>(applicant);
 
+            return applicantResponse;
         }
         public async Task<UpdateApplicantResponse> UpdateAsync(UpdateApplicantRequest request)
         {
-            Applicant applicant = await _applicantRepository.GetAsync(a => a.Id == request.Id);
-            applicant.UpdatedDate = DateTime.Now;
-            applicant.UserName = request.UserName;
-            applicant.FirstName = request.FirstName;
-            applicant.LastName = request.LastName;
-            applicant.DateOfBirth = request.DateOfBirth;
-            applicant.Email = request.Email;
-            applicant.Password = request.Password;
-            applicant.About = request.About;
+            Applicant applicant = _mapper.Map<Applicant>(request);
+            applicant.UpdatedDate = DateTime.UtcNow;
             await _applicantRepository.UpdateAsync(applicant);
 
-            UpdateApplicantResponse applicantResponse = new UpdateApplicantResponse()
-            {
-                Id = applicant.Id,
-                CreatedDate = applicant.CreatedDate,
-                UpdatedDate = applicant.UpdatedDate,
-                UserName = applicant.UserName,
-                FirstName = applicant.FirstName,
-                LastName = applicant.LastName,
-                DateOfBirth = applicant.DateOfBirth,
-                Email = applicant.Email,
-                Password = applicant.Password,
-                About = applicant.About
-            };
+            UpdateApplicantResponse applicantResponse = _mapper.Map<UpdateApplicantResponse>(applicant);
             return applicantResponse;
         }
         public async Task<DeleteApplicantResponse> DeleteAsync(DeleteApplicantRequest request)
         {
-            Applicant applicant =await _applicantRepository.GetAsync(a => a.Id == request.Id);
-            applicant.DeletedDate = DateTime.Now;
-
+            Applicant applicant = await _applicantRepository.GetAsync(a => a.Id == request.Id);
+            applicant.DeletedDate = DateTime.UtcNow;
             await _applicantRepository.DeleteAsync(applicant);
 
-            DeleteApplicantResponse applicantResponse = new DeleteApplicantResponse()
-            {
-                Id = applicant.Id,
-                CreatedDate = applicant.CreatedDate,
-                UpdatedDate = applicant.UpdatedDate,
-                DeletedDate = applicant.DeletedDate,
-                UserName = applicant.UserName,
-                FirstName = applicant.FirstName,
-                LastName = applicant.LastName,
-                DateOfBirth = applicant.DateOfBirth,
-                Email = applicant.Email,
-                Password = applicant.Password,
-                About = applicant.About
-            };
+            DeleteApplicantResponse applicantResponse = _mapper.Map<DeleteApplicantResponse>(applicant);
+
             return applicantResponse;
         }
 
         public async Task<List<GetAllApplicantResponse>> GetAllAsync()
         {
             List<Applicant> applicants = await _applicantRepository.GetAllAsync();
-            List<GetAllApplicantResponse> getAllApplicants = new List<GetAllApplicantResponse>();
-
-            foreach (var applicant in applicants)
-            {
-                getAllApplicants.Add(new GetAllApplicantResponse()
-                {
-                    Id = applicant.Id,
-                    CreatedDate = applicant.CreatedDate,
-                    UpdatedDate = applicant.UpdatedDate,
-                    UserName = applicant.UserName,
-                    FirstName = applicant.FirstName,
-                    LastName = applicant.LastName,
-                    DateOfBirth = applicant.DateOfBirth,
-                    Email = applicant.Email,
-                    Password = applicant.Password,
-                    About = applicant.About,
-                });
-            }
+            List<GetAllApplicantResponse> getAllApplicants = _mapper.Map<List<GetAllApplicantResponse>>(applicants);
 
             return getAllApplicants;
         }

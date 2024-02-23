@@ -1,4 +1,5 @@
-﻿using Business.Abstracts;
+﻿using AutoMapper;
+using Business.Abstracts;
 using Business.Requests.Employee;
 using Business.Responses.Employee;
 using DataAccess.Abstracts;
@@ -14,9 +15,11 @@ namespace Business.Concretes
     public class EmployeeManager : IEmployeeService
     {
         private readonly IEmployeeRepository _employeeRepository;
-        public EmployeeManager(IEmployeeRepository employeeRepository)
+        private readonly IMapper _mapper;
+        public EmployeeManager(IEmployeeRepository employeeRepository, IMapper mapper)
         {
             _employeeRepository = employeeRepository;
+            _mapper = mapper;
         }
         public async Task<GetByIdEmployeeResponse> GetAsync(int id)
         {
@@ -55,7 +58,7 @@ namespace Business.Concretes
             {
                 Id = employee.Id,
                 CreatedDate = employee.CreatedDate,
-                UserName=employee.UserName,
+                UserName = employee.UserName,
                 FirstName = employee.FirstName,
                 LastName = employee.LastName,
                 DateOfBirth = employee.DateOfBirth,
@@ -131,7 +134,7 @@ namespace Business.Concretes
                     Id = employee.Id,
                     CreatedDate = employee.CreatedDate,
                     UpdatedDate = employee.UpdatedDate,
-                    UserName= employee.UserName,
+                    UserName = employee.UserName,
                     FirstName = employee.FirstName,
                     LastName = employee.LastName,
                     DateOfBirth = employee.DateOfBirth,
@@ -141,6 +144,6 @@ namespace Business.Concretes
                 });
             }
             return getAllEmployees;
-        }   
+        }
     }
 }

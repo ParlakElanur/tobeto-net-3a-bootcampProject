@@ -13,7 +13,7 @@ namespace DataAccess.Concretes.EntityFramework.EntityTypeConfigurations
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.ToTable("Users");
+            builder.ToTable("Users").HasKey("Id");
 
             builder.Property(i => i.Id).HasColumnName("Id");
             builder.Property(i => i.CreatedDate).HasColumnName("CreatedDate");
