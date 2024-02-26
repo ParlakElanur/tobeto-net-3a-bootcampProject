@@ -13,6 +13,11 @@ namespace WebAPI.Controllers
     {
         private readonly IApplicationStateService _applicationStateService;
 
+        public ApplicationStateController(IApplicationStateService applicationStateService)
+        {
+            _applicationStateService = applicationStateService;
+        }
+
         [HttpGet("id")]
         public async Task<IDataResult<GetByIdApplicationStateResponse>> GetAsync(int id)
         {

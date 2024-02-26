@@ -53,7 +53,7 @@ namespace Business.Profiles
             CreateMap<Application, GetAllApplicationResponse>().ReverseMap();
 
             //ApplicationState
-            CreateMap<ApplicationState, GetByIdApplicationResponse>().ReverseMap();
+            CreateMap<ApplicationState, GetByIdApplicationStateResponse>().ReverseMap();
 
             CreateMap<CreateApplicationStateRequest, ApplicationState>().ReverseMap();
             CreateMap<ApplicationState, CreateApplicationStateResponse>().ReverseMap();
