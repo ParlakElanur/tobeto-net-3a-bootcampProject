@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Business.Abstracts;
 using Business.Requests.ApplicationState;
-using Business.Responses.Application;
 using Business.Responses.ApplicationState;
+using Core.Utilities.Results;
 using DataAccess.Abstracts;
 using DataAccess.Concretes.Repositories;
 using Entities.Concretes;
@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Business.Concretes
 {
-    public class ApplicationStateManager: IApplicationStateService
+    public class ApplicationStateManager : IApplicationStateService
     {
         private readonly IApplicationStateRepository _applicationStateRepository;
         private readonly IMapper _mapper;
@@ -24,38 +24,46 @@ namespace Business.Concretes
             _applicationStateRepository = applicationStateRepository;
             _mapper = mapper;
         }
-        public async Task<GetByIdApplicationStateResponse> GetAsync(int id)
+        public async Task<IDataResult<GetByIdApplicationStateResponse>> GetAsync(int id)
         {
-            ApplicationState applicationState =await _applicationStateRepository.GetAsync(a => a.Id == id);
-            GetByIdApplicationStateResponse applicationStateResponse=_mapper.Map<GetByIdApplicationStateResponse>(applicationState);
+            ApplicationState applicationState = await _applicationStateRepository.GetAsync(a => a.Id == id);
+            GetByIdApplicationStateResponse applicationStateResponse = _mapper.Map<GetByIdApplicationStateResponse>(applicationState);
 
-            return applicationStateResponse;
+            return new SuccessDataResult<GetByIdApplicationStateResponse>(applicationStateResponse);
         }
-        public async Task<CreateApplicationStateResponse> AddAsync(CreateApplicationStateRequest request)
+        public async Task<IDataResult<CreateApplicationStateResponse>> AddAsync(CreateApplicationStateRequest request)
         {
-            ApplicationState applicationState=_mapper.Map<ApplicationState>(request);
+            ApplicationState applicationState = _mapper.Map<ApplicationState>(request);
             applicationState.CreatedDate = DateTime.UtcNow;
             await _applicationStateRepository.AddAsync(applicationState);
 
-            CreateApplicationStateResponse applicationStateResponse=_mapper.Map<CreateApplicationStateResponse>(applicationState);
-            return applicationStateResponse;
+            CreateApplicationStateResponse applicationStateResponse = _mapper.Map<CreateApplicationStateResponse>(applicationState);
+            return new SuccessDataResult<CreateApplicationStateResponse>(applicationStateResponse);
         }
-        public async Task<UpdateApplicationStateResponse> UpdateAsync(UpdateApplicationStateRequest request)
+        public async Task<IDataResult<UpdateApplicationStateResponse>> UpdateAsync(UpdateApplicationStateRequest request)
         {
             ApplicationState applicationState = _mapper.Map<ApplicationState>(request);
             applicationState.UpdatedDate = DateTime.UtcNow;
             await _applicationStateRepository.UpdateAsync(applicationState);
 
             UpdateApplicationStateResponse applicationStateResponse = _mapper.Map<UpdateApplicationStateResponse>(applicationState);
-            return applicationStateResponse;
+            return new SuccessDataResult<UpdateApplicationStateResponse>(applicationStateResponse);
         }
-        public Task<DeleteApplicationStateResponse> DeleteAsync(DeleteApplicationStateRequest request)
+        public async Task<IDataResult<DeleteApplicationStateResponse>> DeleteAsync(DeleteApplicationStateRequest request)
         {
-            throw new NotImplementedException();
+            ApplicationState applicationState = await _applicationStateRepository.GetAsync(a => a.Id == request.Id);
+            applicationState.DeletedDate = DateTime.UtcNow;
+            await _applicationStateRepository.DeleteAsync(applicationState);
+
+            DeleteApplicationStateResponse applicationStateResponse = _mapper.Map<DeleteApplicationStateResponse>(applicationState);
+            return new SuccessDataResult<DeleteApplicationStateResponse>(applicationStateResponse);
         }
-        public Task<List<GetAllApplicationStateResponse>> GetAllAsync()
+        public async Task<IDataResult<List<GetAllApplicationStateResponse>>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            List<ApplicationState> applicationStates=await _applicationStateRepository.GetAllAsync();
+            List<GetAllApplicationStateResponse> getAllApplicationStates=_mapper.Map<List<GetAllApplicationStateResponse>>(applicationStates);
+
+            return new SuccessDataResult<List<GetAllApplicationStateResponse>>(getAllApplicationStates);
         }
     }
 }

@@ -2,6 +2,7 @@
 using Business.Abstracts;
 using Business.Requests.BootcampState;
 using Business.Responses.BootcampState;
+using Core.Utilities.Results;
 using DataAccess.Abstracts;
 using Entities.Concretes;
 using System;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Business.Concretes
 {
-    public class BootcampStateManager: IBootcampStateService
+    public class BootcampStateManager : IBootcampStateService
     {
         private readonly IBootcampStateRepository _bootcampStateRepository;
         private readonly IMapper _mapper;
@@ -22,39 +23,46 @@ namespace Business.Concretes
             _bootcampStateRepository = bootcampStateRepository;
             _mapper = mapper;
         }
-        public async Task<GetByIdBootcampStateResponse> GetAsync(int id)
+        public async Task<IDataResult<GetByIdBootcampStateResponse>> GetAsync(int id)
         {
-            BootcampState bootcampState =await _bootcampStateRepository.GetAsync(b => b.Id == id);
+            BootcampState bootcampState = await _bootcampStateRepository.GetAsync(b => b.Id == id);
             GetByIdBootcampStateResponse bootcampStateResponse = _mapper.Map<GetByIdBootcampStateResponse>(bootcampState);
 
-            return bootcampStateResponse;
+            return new SuccessDataResult<GetByIdBootcampStateResponse>(bootcampStateResponse);
         }
-        public async Task<CreateBootcampStateResponse> AddAsync(CreateBootcampStateRequest request)
+        public async Task<IDataResult<CreateBootcampStateResponse>> AddAsync(CreateBootcampStateRequest request)
         {
-            BootcampState bootcampState=_mapper.Map<BootcampState>(request);
+            BootcampState bootcampState = _mapper.Map<BootcampState>(request);
             bootcampState.CreatedDate = DateTime.UtcNow;
             await _bootcampStateRepository.AddAsync(bootcampState);
 
             CreateBootcampStateResponse bootcampStateResponse = _mapper.Map<CreateBootcampStateResponse>(bootcampState);
-            return bootcampStateResponse;
+            return new SuccessDataResult<CreateBootcampStateResponse>(bootcampStateResponse);
         }
-        public async Task<UpdateBootcampStateResponse> UpdateAsync(UpdateBootcampStateRequest request)
+        public async Task<IDataResult<UpdateBootcampStateResponse>> UpdateAsync(UpdateBootcampStateRequest request)
         {
             BootcampState bootcampState = _mapper.Map<BootcampState>(request);
-            bootcampState.UpdatedDate= DateTime.UtcNow;
-           await _bootcampStateRepository.UpdateAsync(bootcampState);
+            bootcampState.UpdatedDate = DateTime.UtcNow;
+            await _bootcampStateRepository.UpdateAsync(bootcampState);
 
             UpdateBootcampStateResponse bootcampStateResponse = _mapper.Map<UpdateBootcampStateResponse>(bootcampState);
-            return bootcampStateResponse;
+            return new SuccessDataResult<UpdateBootcampStateResponse>(bootcampStateResponse);
         }
-        public Task<DeleteBootcampStateResponse> DeleteAsync(DeleteBootcampStateRequest request)
+        public async Task<IDataResult<DeleteBootcampStateResponse>> DeleteAsync(DeleteBootcampStateRequest request)
         {
-            throw new NotImplementedException();
-        }
+            BootcampState bootcampState = await _bootcampStateRepository.GetAsync(b => b.Id == request.Id);
+            bootcampState.DeletedDate = DateTime.UtcNow;
+            await _bootcampStateRepository.DeleteAsync(bootcampState);
 
-        public Task<List<GetAllBootcampStateResponse>> GetAllAsync()
+            DeleteBootcampStateResponse bootcampStateResponse = _mapper.Map<DeleteBootcampStateResponse>(bootcampState);
+            return new SuccessDataResult<DeleteBootcampStateResponse>(bootcampStateResponse);
+        }
+        public async Task<IDataResult<List<GetAllBootcampStateResponse>>> GetAllAsync()
         {
-            throw new NotImplementedException();
-        } 
+            List<BootcampState> bootcampStates =await _bootcampStateRepository.GetAllAsync();
+            List<GetAllBootcampStateResponse> getAllBootcampStates=_mapper.Map<List<GetAllBootcampStateResponse>>(bootcampStates);
+
+            return new SuccessDataResult<List<GetAllBootcampStateResponse>>(getAllBootcampStates);
+        }
     }
 }

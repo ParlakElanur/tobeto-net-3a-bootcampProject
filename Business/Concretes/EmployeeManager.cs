@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Business.Abstracts;
 using Business.Requests.Employee;
+using Business.Responses.BootcampState;
 using Business.Responses.Employee;
+using Core.Utilities.Results;
 using DataAccess.Abstracts;
 using Entities.Concretes;
 using System;
@@ -21,7 +23,7 @@ namespace Business.Concretes
             _employeeRepository = employeeRepository;
             _mapper = mapper;
         }
-        public async Task<GetByIdEmployeeResponse> GetAsync(int id)
+        public async Task<IDataResult<GetByIdEmployeeResponse>> GetAsync(int id)
         {
             Employee employee = await _employeeRepository.GetAsync(e => e.Id == id);
             GetByIdEmployeeResponse employeeResponse = new GetByIdEmployeeResponse()
@@ -37,9 +39,9 @@ namespace Business.Concretes
                 Password = employee.Password,
                 Position = employee.Position
             };
-            return employeeResponse;
+            return new SuccessDataResult<GetByIdEmployeeResponse>(employeeResponse);
         }
-        public async Task<CreateEmployeeResponse> AddAsync(CreateEmployeeRequest request)
+        public async Task<IDataResult<CreateEmployeeResponse>> AddAsync(CreateEmployeeRequest request)
         {
             Employee employee = new Employee()
             {
@@ -66,9 +68,9 @@ namespace Business.Concretes
                 Password = employee.Password,
                 Position = employee.Position
             };
-            return employeeResponse;
+            return new SuccessDataResult<CreateEmployeeResponse>(employeeResponse);
         }
-        public async Task<UpdateEmployeeResponse> UpdateAsync(UpdateEmployeeRequest request)
+        public async Task<IDataResult<UpdateEmployeeResponse>> UpdateAsync(UpdateEmployeeRequest request)
         {
             Employee employee = await _employeeRepository.GetAsync(e => e.Id == request.Id);
             employee.UpdatedDate = DateTime.Now;
@@ -95,10 +97,10 @@ namespace Business.Concretes
                 Password = employee.Password,
                 Position = employee.Position
             };
-            return employeeResponse;
+            return new SuccessDataResult<UpdateEmployeeResponse>(employeeResponse);
 
         }
-        public async Task<DeleteEmployeeResponse> DeleteAsync(DeleteEmployeeRequest request)
+        public async Task<IDataResult<DeleteEmployeeResponse>> DeleteAsync(DeleteEmployeeRequest request)
         {
             Employee employee = await _employeeRepository.GetAsync(e => e.Id == request.Id);
             employee.DeletedDate = DateTime.Now;
@@ -119,10 +121,10 @@ namespace Business.Concretes
                 Password = employee.Password,
                 Position = employee.Position
             };
-            return employeeResponse;
+            return new SuccessDataResult<DeleteEmployeeResponse>(employeeResponse);
         }
 
-        public async Task<List<GetAllEmployeeResponse>> GetAllAsync()
+        public async Task<IDataResult<List<GetAllEmployeeResponse>>> GetAllAsync()
         {
             List<Employee> employees = await _employeeRepository.GetAllAsync();
             List<GetAllEmployeeResponse> getAllEmployees = new List<GetAllEmployeeResponse>();
@@ -143,7 +145,7 @@ namespace Business.Concretes
                     Position = employee.Position
                 });
             }
-            return getAllEmployees;
+            return new SuccessDataResult<List<GetAllEmployeeResponse>>(getAllEmployees);
         }
     }
 }

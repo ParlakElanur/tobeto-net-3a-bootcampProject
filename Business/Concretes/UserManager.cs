@@ -1,5 +1,6 @@
 ﻿using Business.Abstracts;
 using Business.Responses.User;
+using Core.Utilities.Results;
 using DataAccess.Abstracts;
 using Entities.Concretes;
 using System;
@@ -17,7 +18,7 @@ namespace Business.Concretes
         {
             _userRepository = userRepository;
         }
-        public async Task<GetByIdUserResponse> GetAsync(int id)
+        public async Task<IDataResult<GetByIdUserResponse>> GetAsync(int id)
         {
             User user = await _userRepository.GetAsync(u => u.Id == id);
             GetByIdUserResponse userResponse = new GetByIdUserResponse()
@@ -32,9 +33,9 @@ namespace Business.Concretes
                 Email = user.Email,
                 Password = user.Password,
             };
-            return userResponse;
+            return new SuccessDataResult<GetByIdUserResponse>(userResponse);
         }
-        public async Task<List<GetAllUserResponse>> GetAllAsync()
+        public async Task<IDataResult<List<GetAllUserResponse>>> GetAllAsync()
         {
             List<User> users =await _userRepository.GetAllAsync();
             List<GetAllUserResponse> getAllUsers= new List<GetAllUserResponse>();
@@ -54,7 +55,7 @@ namespace Business.Concretes
                     Password = user.Password,
                 });
             }
-            return getAllUsers;
+            return new SuccessDataResult<List<GetAllUserResponse>>(getAllUsers);
         }
     }
 }

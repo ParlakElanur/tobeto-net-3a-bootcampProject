@@ -2,6 +2,7 @@
 using Business.Abstracts;
 using Business.Requests.Applicant;
 using Business.Responses.Applicant;
+using Core.Utilities.Results;
 using DataAccess.Abstracts;
 using Entities.Concretes;
 using System;
@@ -22,14 +23,14 @@ namespace Business.Concretes
             _applicantRepository = applicantRepository;
             _mapper = mapper;
         }
-        public async Task<GetByIdApplicantResponse> GetAsync(int id)
+        public async Task<IDataResult<GetByIdApplicantResponse>> GetAsync(int id)
         {
             Applicant applicant = await _applicantRepository.GetAsync(a => a.Id == id);
             GetByIdApplicantResponse applicantResponse = _mapper.Map<GetByIdApplicantResponse>(applicant);
 
-            return applicantResponse;
+            return new SuccessDataResult<GetByIdApplicantResponse>(applicantResponse);
         }
-        public async Task<CreateApplicantResponse> AddAsync(CreateApplicantRequest request)
+        public async Task<IDataResult<CreateApplicantResponse>> AddAsync(CreateApplicantRequest request)
         {
             Applicant applicant = _mapper.Map<Applicant>(request);
             applicant.CreatedDate = DateTime.UtcNow;
@@ -37,18 +38,18 @@ namespace Business.Concretes
 
             CreateApplicantResponse applicantResponse = _mapper.Map<CreateApplicantResponse>(applicant);
 
-            return applicantResponse;
+            return new SuccessDataResult<CreateApplicantResponse>(applicantResponse);
         }
-        public async Task<UpdateApplicantResponse> UpdateAsync(UpdateApplicantRequest request)
+        public async Task<IDataResult<UpdateApplicantResponse>> UpdateAsync(UpdateApplicantRequest request)
         {
             Applicant applicant = _mapper.Map<Applicant>(request);
             applicant.UpdatedDate = DateTime.UtcNow;
             await _applicantRepository.UpdateAsync(applicant);
 
             UpdateApplicantResponse applicantResponse = _mapper.Map<UpdateApplicantResponse>(applicant);
-            return applicantResponse;
+            return new SuccessDataResult<UpdateApplicantResponse>(applicantResponse);
         }
-        public async Task<DeleteApplicantResponse> DeleteAsync(DeleteApplicantRequest request)
+        public async Task<IDataResult<DeleteApplicantResponse>> DeleteAsync(DeleteApplicantRequest request)
         {
             Applicant applicant = await _applicantRepository.GetAsync(a => a.Id == request.Id);
             applicant.DeletedDate = DateTime.UtcNow;
@@ -56,15 +57,15 @@ namespace Business.Concretes
 
             DeleteApplicantResponse applicantResponse = _mapper.Map<DeleteApplicantResponse>(applicant);
 
-            return applicantResponse;
+            return new SuccessDataResult<DeleteApplicantResponse>(applicantResponse);
         }
 
-        public async Task<List<GetAllApplicantResponse>> GetAllAsync()
+        public async Task<IDataResult<List<GetAllApplicantResponse>>> GetAllAsync()
         {
             List<Applicant> applicants = await _applicantRepository.GetAllAsync();
             List<GetAllApplicantResponse> getAllApplicants = _mapper.Map<List<GetAllApplicantResponse>>(applicants);
 
-            return getAllApplicants;
+            return new SuccessDataResult<List<GetAllApplicantResponse>>(getAllApplicants);
         }
 
     }

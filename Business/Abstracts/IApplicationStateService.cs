@@ -1,5 +1,6 @@
 ﻿using Business.Requests.ApplicationState;
 using Business.Responses.ApplicationState;
+using Core.Utilities.Results;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +11,10 @@ namespace Business.Abstracts
 {
     public interface IApplicationStateService
     {
-        Task<GetByIdApplicationStateResponse> GetAsync(int id);
-        Task<CreateApplicationStateResponse> AddAsync(CreateApplicationStateRequest request);
-        Task<UpdateApplicationStateResponse> UpdateAsync(UpdateApplicationStateRequest request);
-        Task<DeleteApplicationStateResponse> DeleteAsync(DeleteApplicationStateRequest request);
-        Task<List<GetAllApplicationStateResponse>> GetAllAsync();
+        Task<IDataResult<GetByIdApplicationStateResponse>> GetAsync(int id);
+        Task<IDataResult<CreateApplicationStateResponse>> AddAsync(CreateApplicationStateRequest request);
+        Task<IDataResult<UpdateApplicationStateResponse>> UpdateAsync(UpdateApplicationStateRequest request);
+        Task<IDataResult<DeleteApplicationStateResponse>> DeleteAsync(DeleteApplicationStateRequest request);
+        Task<IDataResult<List<GetAllApplicationStateResponse>>> GetAllAsync();
     }
 }

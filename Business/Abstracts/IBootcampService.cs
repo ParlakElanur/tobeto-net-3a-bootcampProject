@@ -1,5 +1,6 @@
 ﻿using Business.Requests.Bootcamp;
 using Business.Responses.Bootcamp;
+using Core.Utilities.Results;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +11,10 @@ namespace Business.Abstracts
 {
     public interface IBootcampService
     {
-        Task<GetByIdBootcampResponse> GetAsync(int id);
-        Task<CreateBootcampResponse> AddAsync(CreateBootcampRequest request);
-        Task<UpdateBootcampResponse> UpdateAsync(UpdateBootrcampRequest request);
-        Task<DeleteBootcampResponse> DeleteAsync(DeleteBootcampRequest request);
-        Task<List<GetAllBootcampResponse>> GetAllAsync();
+        Task<IDataResult<GetByIdBootcampResponse>> GetAsync(int id);
+        Task<IDataResult<CreateBootcampResponse>> AddAsync(CreateBootcampRequest request);
+        Task<IDataResult<UpdateBootcampResponse>> UpdateAsync(UpdateBootrcampRequest request);
+        Task<IDataResult<DeleteBootcampResponse>> DeleteAsync(DeleteBootcampRequest request);
+        Task<IDataResult<List<GetAllBootcampResponse>>> GetAllAsync();
     }
 }

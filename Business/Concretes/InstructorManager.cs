@@ -1,6 +1,7 @@
 ﻿using Business.Abstracts;
 using Business.Requests.Instructor;
 using Business.Responses.Instructor;
+using Core.Utilities.Results;
 using DataAccess.Abstracts;
 using Entities.Concretes;
 using System;
@@ -18,7 +19,7 @@ namespace Business.Concretes
         {
             _intructorRepository = instructorRepository;
         }
-        public async Task<GetByIdInstructorResponse> GetAsync(int id)
+        public async Task<IDataResult<GetByIdInstructorResponse>> GetAsync(int id)
         {
             Instructor instructor = await _intructorRepository.GetAsync(i => i.Id == id);
             GetByIdInstructorResponse instructorResponse = new GetByIdInstructorResponse()
@@ -34,9 +35,9 @@ namespace Business.Concretes
                 Password = instructor.Password,
                 CompanyName = instructor.CompanyName
             };
-            return instructorResponse;
+            return new SuccessDataResult<GetByIdInstructorResponse>(instructorResponse);
         }
-        public async Task<CreateInstructorResponse> AddAsync(CreateInstructorRequest request)
+        public async Task<IDataResult<CreateInstructorResponse>> AddAsync(CreateInstructorRequest request)
         {
             Instructor instructor = new Instructor()
             {
@@ -63,9 +64,9 @@ namespace Business.Concretes
                 Password = instructor.Password,
                 CompanyName = instructor.CompanyName
             };
-            return instructorResponse;
+            return new SuccessDataResult<CreateInstructorResponse>(instructorResponse);
         }
-        public async Task<UpdateInstructorResponse> UpdateAsync(UpdateInstructorRequest request)
+        public async Task<IDataResult<UpdateInstructorResponse>> UpdateAsync(UpdateInstructorRequest request)
         {
             Instructor instructor = await _intructorRepository.GetAsync(i => i.Id == request.Id);
             instructor.UpdatedDate = DateTime.Now;
@@ -91,9 +92,9 @@ namespace Business.Concretes
                 Password = instructor.Password,
                 CompanyName = instructor.CompanyName
             };
-            return instructorResponse;
+            return new SuccessDataResult<UpdateInstructorResponse>(instructorResponse);
         }
-        public async Task<DeleteInstructorResponse> DeleteAsync(DeleteInstructorRequest request)
+        public async Task<IDataResult<DeleteInstructorResponse>> DeleteAsync(DeleteInstructorRequest request)
         {
             Instructor instructor = await _intructorRepository.GetAsync(i => i.Id == request.Id);
             instructor.DeletedDate = DateTime.Now;
@@ -105,7 +106,7 @@ namespace Business.Concretes
                 Id = instructor.Id,
                 CreatedDate = instructor.CreatedDate,
                 UpdatedDate = instructor.UpdatedDate,
-                DeletedDate= instructor.DeletedDate,
+                DeletedDate = instructor.DeletedDate,
                 UserName = instructor.UserName,
                 FirstName = instructor.FirstName,
                 LastName = instructor.LastName,
@@ -114,13 +115,13 @@ namespace Business.Concretes
                 Password = instructor.Password,
                 CompanyName = instructor.CompanyName
             };
-            return instructorResponse;
+            return new SuccessDataResult<DeleteInstructorResponse>(instructorResponse);
         }
 
-        public async Task<List<GetAllInstructorResponse>> GetAllAsync()
+        public async Task<IDataResult<List<GetAllInstructorResponse>>> GetAllAsync()
         {
-            List<Instructor> instructors =await _intructorRepository.GetAllAsync();
-            List<GetAllInstructorResponse> getAllInstructors=new List<GetAllInstructorResponse>();
+            List<Instructor> instructors = await _intructorRepository.GetAllAsync();
+            List<GetAllInstructorResponse> getAllInstructors = new List<GetAllInstructorResponse>();
 
             foreach (var instructor in instructors)
             {
@@ -138,7 +139,7 @@ namespace Business.Concretes
                     CompanyName = instructor.CompanyName
                 });
             }
-            return getAllInstructors;
+            return new SuccessDataResult<List<GetAllInstructorResponse>>(getAllInstructors);
         }
     }
 }
