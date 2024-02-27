@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(BaseDbContext))]
-    [Migration("20240222174024_Initial")]
+    [Migration("20240227224817_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -98,6 +98,45 @@ namespace DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ApplicationStates", (string)null);
+                });
+
+            modelBuilder.Entity("Entities.Concretes.Blacklist", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ApplicantId")
+                        .HasColumnType("int")
+                        .HasColumnName("ApplicantId");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreatedDate");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("Date");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DeletedDate");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Reason");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("UpdatedDate");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Blacklists", (string)null);
                 });
 
             modelBuilder.Entity("Entities.Concretes.Bootcamp", b =>
@@ -248,6 +287,11 @@ namespace DataAccess.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("About");
 
+                    b.Property<int>("BlacklistId")
+                        .HasColumnType("int");
+
+                    b.HasIndex("BlacklistId");
+
                     b.ToTable("Applicants", (string)null);
                 });
 
@@ -323,11 +367,19 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Entities.Concretes.Applicant", b =>
                 {
+                    b.HasOne("Entities.Concretes.Blacklist", "Blacklist")
+                        .WithMany("Applicants")
+                        .HasForeignKey("BlacklistId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Entities.Concretes.User", null)
                         .WithOne()
                         .HasForeignKey("Entities.Concretes.Applicant", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Blacklist");
                 });
 
             modelBuilder.Entity("Entities.Concretes.Employee", b =>
@@ -351,6 +403,11 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Entities.Concretes.ApplicationState", b =>
                 {
                     b.Navigation("Applications");
+                });
+
+            modelBuilder.Entity("Entities.Concretes.Blacklist", b =>
+                {
+                    b.Navigation("Applicants");
                 });
 
             modelBuilder.Entity("Entities.Concretes.Bootcamp", b =>

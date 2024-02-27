@@ -2,6 +2,7 @@
 using Business.Requests.Applicant;
 using Business.Requests.Application;
 using Business.Requests.ApplicationState;
+using Business.Requests.Blacklist;
 using Business.Requests.Bootcamp;
 using Business.Requests.BootcampState;
 using Business.Requests.Employee;
@@ -9,6 +10,7 @@ using Business.Requests.Instructor;
 using Business.Responses.Applicant;
 using Business.Responses.Application;
 using Business.Responses.ApplicationState;
+using Business.Responses.Blacklist;
 using Business.Responses.Bootcamp;
 using Business.Responses.BootcampState;
 using Business.Responses.Employee;
@@ -59,6 +61,17 @@ namespace Business.Profiles
 
             CreateMap<ApplicationState, GetAllApplicationStateResponse>().ReverseMap();
 
+            //Blacklist
+            CreateMap<Blacklist, GetByIdBlacklistResponse>().ReverseMap();
+
+            CreateMap<CreateBlacklistRequest, Blacklist>().ReverseMap();
+            CreateMap<Blacklist, CreateBlacklistResponse>().ReverseMap();
+
+            CreateMap<UpdateBlacklistRequest, Blacklist>().ReverseMap();
+            CreateMap<Blacklist, UpdateBlacklistResponse>().ReverseMap();
+
+            CreateMap<Blacklist, GetAllBlacklistResponse>().ReverseMap();
+
             //Bootcamp
             CreateMap<Bootcamp, GetByIdBootcampResponse>().ReverseMap();
 
@@ -102,9 +115,6 @@ namespace Business.Profiles
             CreateMap<Instructor, UpdateInstructorResponse>().ReverseMap();
 
             CreateMap<Instructor, GetAllInstructorResponse>().ReverseMap();
-
-
-
         }
     }
 }

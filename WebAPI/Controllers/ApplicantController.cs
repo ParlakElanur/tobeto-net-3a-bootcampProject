@@ -1,9 +1,5 @@
 ﻿using Business.Abstracts;
 using Business.Requests.Applicant;
-using Business.Responses.Applicant;
-using Core.Utilities.Results;
-using Entities.Concretes;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers

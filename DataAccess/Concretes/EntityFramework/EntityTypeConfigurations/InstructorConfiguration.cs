@@ -16,6 +16,8 @@ namespace DataAccess.Concretes.EntityFramework.EntityTypeConfigurations
             builder.ToTable("Instructors");
 
             builder.Property(i => i.CompanyName).HasColumnName("CompanyName");
+
+            builder.HasMany(i => i.Bootcamps);
         }
     }
 }

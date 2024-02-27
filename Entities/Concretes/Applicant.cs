@@ -17,6 +17,7 @@ namespace Entities.Concretes
         {
             About = about;
         }
-        public ICollection<Application> Applications { get; set; } 
+        public ICollection<Application> Applications { get; set; }
+        public Blacklist Blacklist { get; set; }
     }
 }

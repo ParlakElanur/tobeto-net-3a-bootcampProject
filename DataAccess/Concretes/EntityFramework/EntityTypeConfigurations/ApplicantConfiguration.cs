@@ -17,6 +17,8 @@ namespace DataAccess.Concretes.EntityFramework.EntityTypeConfigurations
 
             builder.Property(a => a.About).HasColumnName("About");
 
+            builder.HasMany(a => a.Applications);
+            builder.HasOne(a => a.Blacklist);
         }
     }
 }
