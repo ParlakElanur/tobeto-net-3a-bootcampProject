@@ -9,7 +9,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ApplicationController : ControllerBase
+    public class ApplicationController : BaseController
     {
         private readonly IApplicationService _applicationService;
         public ApplicationController(IApplicationService applicationService)
@@ -17,29 +17,29 @@ namespace WebAPI.Controllers
             _applicationService = applicationService;
         }
         [HttpGet("id")]
-        public async Task<IDataResult<GetByIdApplicationResponse>> GetAsync(int id)
+        public async Task<IActionResult> GetAsync(int id)
         {
-            return await _applicationService.GetAsync(id);
+            return HandleDataResult(await _applicationService.GetAsync(id));
         }
         [HttpPost]
-        public async Task<IDataResult<CreateApplicationResponse>> AddAsync(CreateApplicationRequest request)
+        public async Task<IActionResult> AddAsync(CreateApplicationRequest request)
         {
-            return await _applicationService.AddAsync(request);
+            return HandleResult(await _applicationService.AddAsync(request));
         }
         [HttpPut]
-        public async Task<IDataResult<UpdateApplicationResponse>> UpdateAsync(UpdateApplicationRequest request)
+        public async Task<IActionResult> UpdateAsync(UpdateApplicationRequest request)
         {
-            return await _applicationService.UpdateAsync(request);
+            return HandleResult(await _applicationService.UpdateAsync(request));
         }
         [HttpDelete]
-        public async Task<IDataResult<DeleteApplicationResponse>> DeleteAsync(DeleteApplicationRequest request) 
+        public async Task<IActionResult> DeleteAsync(DeleteApplicationRequest request)
         {
-            return await _applicationService.DeleteAsync(request);
+            return HandleResult(await _applicationService.DeleteAsync(request));
         }
         [HttpGet]
-        public async Task<IDataResult<List<GetAllApplicationResponse>>> GetAllAsync()
+        public async Task<IActionResult> GetAllAsync()
         {
-            return await _applicationService.GetAllAsync();
+            return HandleResult(await _applicationService.GetAllAsync());
         }
     }
 }

@@ -35,8 +35,6 @@ namespace Business.Profiles
             CreateMap<UpdateApplicantRequest, Applicant>().ReverseMap();
             CreateMap<Applicant, UpdateApplicantResponse>().ReverseMap();
 
-            CreateMap<Applicant,DeleteApplicantResponse>().ReverseMap();
-
             CreateMap<Applicant, GetAllApplicantResponse>().ReverseMap();
 
             //Application
@@ -47,8 +45,6 @@ namespace Business.Profiles
 
             CreateMap<UpdateApplicationRequest, Application>().ReverseMap();
             CreateMap<Application, UpdateApplicationResponse>().ReverseMap();
-
-            CreateMap<Application, DeleteApplicationResponse>().ReverseMap();
 
             CreateMap<Application, GetAllApplicationResponse>().ReverseMap();
 
@@ -61,8 +57,6 @@ namespace Business.Profiles
             CreateMap<UpdateApplicationStateRequest, ApplicationState>().ReverseMap();
             CreateMap<ApplicationState, UpdateApplicationStateResponse>().ReverseMap();
 
-            CreateMap<ApplicationState, DeleteApplicationStateResponse>().ReverseMap();
-
             CreateMap<ApplicationState, GetAllApplicationStateResponse>().ReverseMap();
 
             //Bootcamp
@@ -73,8 +67,6 @@ namespace Business.Profiles
 
             CreateMap<UpdateBootrcampRequest, Bootcamp>().ReverseMap();
             CreateMap<Bootcamp, UpdateBootcampResponse>().ReverseMap();
-
-            CreateMap<Bootcamp, DeleteBootcampResponse>().ReverseMap();
 
             CreateMap<Bootcamp, GetAllBootcampResponse>().ReverseMap();
 
@@ -87,8 +79,6 @@ namespace Business.Profiles
             CreateMap<UpdateBootcampStateRequest, BootcampState>().ReverseMap();
             CreateMap<BootcampState, UpdateBootcampStateResponse>().ReverseMap();
 
-            CreateMap<BootcampState, DeleteBootcampStateResponse>().ReverseMap();
-
             CreateMap<BootcampState, GetAllBootcampStateResponse>().ReverseMap();
 
             //Employee
@@ -100,8 +90,6 @@ namespace Business.Profiles
             CreateMap<UpdateEmployeeRequest, Employee>().ReverseMap();
             CreateMap<Employee, UpdateEmployeeResponse>().ReverseMap();
 
-            CreateMap<Employee, DeleteEmployeeResponse>().ReverseMap();
-
             CreateMap<Employee, GetAllEmployeeResponse>().ReverseMap();
 
             //Instructor
@@ -112,8 +100,6 @@ namespace Business.Profiles
 
             CreateMap<UpdateInstructorRequest, Instructor>().ReverseMap();
             CreateMap<Instructor, UpdateInstructorResponse>().ReverseMap();
-
-            CreateMap<Instructor,DeleteInstructorResponse>().ReverseMap();
 
             CreateMap<Instructor, GetAllInstructorResponse>().ReverseMap();
 

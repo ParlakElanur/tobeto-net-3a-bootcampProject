@@ -1,14 +1,11 @@
 ﻿using Business.Abstracts;
-using Business.Responses.User;
-using Core.Utilities.Results;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UserController : BaseController
     {
         private readonly IUserService _userService;
         public UserController(IUserService userService)
@@ -16,14 +13,14 @@ namespace WebAPI.Controllers
             _userService = userService;
         }
         [HttpGet("id")]
-        public async Task<IDataResult<GetByIdUserResponse>> GetAsync(int id)
+        public async Task<IActionResult> GetAsync(int id)
         {
-           return await _userService.GetAsync(id);
+           return HandleDataResult(await _userService.GetAsync(id));
         }
         [HttpGet]
-        public async Task<IDataResult<List<GetAllUserResponse>>> GetAllAsync()
+        public async Task<IActionResult> GetAllAsync()
         {
-            return await _userService.GetAllAsync();
+            return HandleDataResult(await _userService.GetAllAsync());
         }
     }
 }

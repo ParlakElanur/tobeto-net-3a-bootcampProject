@@ -1,15 +1,12 @@
 ﻿using Business.Abstracts;
 using Business.Requests.Instructor;
-using Business.Responses.Instructor;
-using Core.Utilities.Results;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class InstructorController : ControllerBase
+    public class InstructorController : BaseController
     {
         private readonly IInstructorService _instructorService;
         public InstructorController(IInstructorService instructorService)
@@ -17,29 +14,29 @@ namespace WebAPI.Controllers
             _instructorService = instructorService;
         }
         [HttpGet("id")]
-        public async Task<IDataResult<GetByIdInstructorResponse>> GetAsync(int id)
+        public async Task<IActionResult> GetAsync(int id)
         {
-            return await _instructorService.GetAsync(id);
+            return HandleDataResult(await _instructorService.GetAsync(id));
         }
         [HttpPost]
-        public async Task<IDataResult<CreateInstructorResponse>> AddAsync(CreateInstructorRequest request)
+        public async Task<IActionResult> AddAsync(CreateInstructorRequest request)
         {
-            return await _instructorService.AddAsync(request);
+            return HandleDataResult(await _instructorService.AddAsync(request));
         }
         [HttpPut]
-        public async Task<IDataResult<UpdateInstructorResponse>> UpdateAsync(UpdateInstructorRequest request)
+        public async Task<IActionResult> UpdateAsync(UpdateInstructorRequest request)
         {
-            return await _instructorService.UpdateAsync(request);
+            return HandleDataResult(await _instructorService.UpdateAsync(request));
         }
         [HttpDelete]
-        public async Task<IDataResult<DeleteInstructorResponse>> DeleteAsync(DeleteInstructorRequest request)
+        public async Task<IActionResult> DeleteAsync(DeleteInstructorRequest request)
         {
-            return await _instructorService.DeleteAsync(request);
+            return HandleResult(await _instructorService.DeleteAsync(request));
         }
         [HttpGet] 
-        public async Task<IDataResult<List<GetAllInstructorResponse>>> GetAllAsync()
+        public async Task<IActionResult> GetAllAsync()
         {
-            return await _instructorService.GetAllAsync();
+            return HandleDataResult(await _instructorService.GetAllAsync());
         }
     }
 }

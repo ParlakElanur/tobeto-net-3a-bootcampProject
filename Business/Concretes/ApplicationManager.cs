@@ -28,7 +28,7 @@ namespace Business.Concretes
             Application application = await _applicationRepository.GetAsync(a => a.Id == id);
             GetByIdApplicationResponse applicationResponse = _mapper.Map<GetByIdApplicationResponse>(application);
 
-            return new SuccessDataResult<GetByIdApplicationResponse>(applicationResponse);
+            return new SuccessDataResult<GetByIdApplicationResponse>(applicationResponse, "Received successfully");
         }
         public async Task<IDataResult<CreateApplicationResponse>> AddAsync(CreateApplicationRequest request)
         {
@@ -37,7 +37,7 @@ namespace Business.Concretes
             await _applicationRepository.AddAsync(application);
 
             CreateApplicationResponse applicationResponse = _mapper.Map<CreateApplicationResponse>(application);
-            return new SuccessDataResult<CreateApplicationResponse>(applicationResponse);
+            return new SuccessDataResult<CreateApplicationResponse>(applicationResponse, "Added successfully");
         }
         public async Task<IDataResult<UpdateApplicationResponse>> UpdateAsync(UpdateApplicationRequest request)
         {
@@ -46,16 +46,15 @@ namespace Business.Concretes
             await _applicationRepository.UpdateAsync(application);
 
             UpdateApplicationResponse applicationResponse = _mapper.Map<UpdateApplicationResponse>(application);
-            return new SuccessDataResult<UpdateApplicationResponse>(applicationResponse);
+            return new SuccessDataResult<UpdateApplicationResponse>(applicationResponse, "Updated successfully");
         }
-        public async Task<IDataResult<DeleteApplicationResponse>> DeleteAsync(DeleteApplicationRequest request)
+        public async Task<IResult> DeleteAsync(DeleteApplicationRequest request)
         {
             Application application = await _applicationRepository.GetAsync(a => a.Id == request.Id);
             application.DeletedDate = DateTime.UtcNow;
             await _applicationRepository.DeleteAsync(application);
 
-            DeleteApplicationResponse applicationResponse=_mapper.Map<DeleteApplicationResponse>(application);
-            return new SuccessDataResult<DeleteApplicationResponse>(applicationResponse);
+            return new SuccessResult("Deleted successfully");
         }
 
         public async Task<IDataResult<List<GetAllApplicationResponse>>> GetAllAsync()
@@ -63,7 +62,7 @@ namespace Business.Concretes
             List<Application> applications =await _applicationRepository.GetAllAsync();
             List<GetAllApplicationResponse> getAllApplications =_mapper.Map<List<GetAllApplicationResponse>>(applications);
 
-            return new SuccessDataResult<List<GetAllApplicationResponse>>(getAllApplications);
+            return new SuccessDataResult<List<GetAllApplicationResponse>>(getAllApplications, "Listed successfully");
         }
     }
 }

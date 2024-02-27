@@ -28,7 +28,7 @@ namespace Business.Concretes
             BootcampState bootcampState = await _bootcampStateRepository.GetAsync(b => b.Id == id);
             GetByIdBootcampStateResponse bootcampStateResponse = _mapper.Map<GetByIdBootcampStateResponse>(bootcampState);
 
-            return new SuccessDataResult<GetByIdBootcampStateResponse>(bootcampStateResponse);
+            return new SuccessDataResult<GetByIdBootcampStateResponse>(bootcampStateResponse, "Received successfully");
         }
         public async Task<IDataResult<CreateBootcampStateResponse>> AddAsync(CreateBootcampStateRequest request)
         {
@@ -37,7 +37,7 @@ namespace Business.Concretes
             await _bootcampStateRepository.AddAsync(bootcampState);
 
             CreateBootcampStateResponse bootcampStateResponse = _mapper.Map<CreateBootcampStateResponse>(bootcampState);
-            return new SuccessDataResult<CreateBootcampStateResponse>(bootcampStateResponse);
+            return new SuccessDataResult<CreateBootcampStateResponse>(bootcampStateResponse, "Added successfully");
         }
         public async Task<IDataResult<UpdateBootcampStateResponse>> UpdateAsync(UpdateBootcampStateRequest request)
         {
@@ -46,23 +46,22 @@ namespace Business.Concretes
             await _bootcampStateRepository.UpdateAsync(bootcampState);
 
             UpdateBootcampStateResponse bootcampStateResponse = _mapper.Map<UpdateBootcampStateResponse>(bootcampState);
-            return new SuccessDataResult<UpdateBootcampStateResponse>(bootcampStateResponse);
+            return new SuccessDataResult<UpdateBootcampStateResponse>(bootcampStateResponse, "Updated successfully");
         }
-        public async Task<IDataResult<DeleteBootcampStateResponse>> DeleteAsync(DeleteBootcampStateRequest request)
+        public async Task<IResult> DeleteAsync(DeleteBootcampStateRequest request)
         {
             BootcampState bootcampState = await _bootcampStateRepository.GetAsync(b => b.Id == request.Id);
             bootcampState.DeletedDate = DateTime.UtcNow;
             await _bootcampStateRepository.DeleteAsync(bootcampState);
 
-            DeleteBootcampStateResponse bootcampStateResponse = _mapper.Map<DeleteBootcampStateResponse>(bootcampState);
-            return new SuccessDataResult<DeleteBootcampStateResponse>(bootcampStateResponse);
+            return new SuccessResult("Deleted successfully");
         }
         public async Task<IDataResult<List<GetAllBootcampStateResponse>>> GetAllAsync()
         {
-            List<BootcampState> bootcampStates =await _bootcampStateRepository.GetAllAsync();
-            List<GetAllBootcampStateResponse> getAllBootcampStates=_mapper.Map<List<GetAllBootcampStateResponse>>(bootcampStates);
+            List<BootcampState> bootcampStates = await _bootcampStateRepository.GetAllAsync();
+            List<GetAllBootcampStateResponse> getAllBootcampStates = _mapper.Map<List<GetAllBootcampStateResponse>>(bootcampStates);
 
-            return new SuccessDataResult<List<GetAllBootcampStateResponse>>(getAllBootcampStates);
+            return new SuccessDataResult<List<GetAllBootcampStateResponse>>(getAllBootcampStates, "Listed successfully");
         }
     }
 }

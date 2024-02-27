@@ -1,4 +1,5 @@
-﻿using Business.Abstracts;
+﻿using AutoMapper;
+using Business.Abstracts;
 using Business.Responses.User;
 using Core.Utilities.Results;
 using DataAccess.Abstracts;
@@ -11,51 +12,28 @@ using System.Threading.Tasks;
 
 namespace Business.Concretes
 {
-    public class UserManager:IUserService
+    public class UserManager : IUserService
     {
         private readonly IUserRepository _userRepository;
-        public UserManager(IUserRepository userRepository)
+        private readonly IMapper _mapper;
+        public UserManager(IUserRepository userRepository, IMapper mapper)
         {
             _userRepository = userRepository;
+            _mapper = mapper;
         }
         public async Task<IDataResult<GetByIdUserResponse>> GetAsync(int id)
         {
             User user = await _userRepository.GetAsync(u => u.Id == id);
-            GetByIdUserResponse userResponse = new GetByIdUserResponse()
-            {
-                Id = user.Id,
-                CreatedDate = user.CreatedDate,
-                UpdatedDate = user.UpdatedDate,
-                UserName = user.UserName,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                DateOfBirth = user.DateOfBirth,
-                Email = user.Email,
-                Password = user.Password,
-            };
-            return new SuccessDataResult<GetByIdUserResponse>(userResponse);
+            GetByIdUserResponse userResponse = _mapper.Map<GetByIdUserResponse>(user);
+
+            return new SuccessDataResult<GetByIdUserResponse>(userResponse, "Received successfully");
         }
         public async Task<IDataResult<List<GetAllUserResponse>>> GetAllAsync()
         {
-            List<User> users =await _userRepository.GetAllAsync();
-            List<GetAllUserResponse> getAllUsers= new List<GetAllUserResponse>();
+            List<User> users = await _userRepository.GetAllAsync();
+            List<GetAllUserResponse> getAllUsers = _mapper.Map<List<GetAllUserResponse>>(users);
 
-            foreach (var user in users)
-            {
-                getAllUsers.Add(new GetAllUserResponse()
-                {
-                    Id = user.Id,
-                    CreatedDate = user.CreatedDate,
-                    UpdatedDate = user.UpdatedDate,
-                    UserName = user.UserName,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    DateOfBirth = user.DateOfBirth,
-                    Email = user.Email,
-                    Password = user.Password,
-                });
-            }
-            return new SuccessDataResult<List<GetAllUserResponse>>(getAllUsers);
+            return new SuccessDataResult<List<GetAllUserResponse>>(getAllUsers, "Listed successfully");
         }
     }
 }

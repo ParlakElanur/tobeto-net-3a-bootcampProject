@@ -28,7 +28,7 @@ namespace Business.Concretes
             Applicant applicant = await _applicantRepository.GetAsync(a => a.Id == id);
             GetByIdApplicantResponse applicantResponse = _mapper.Map<GetByIdApplicantResponse>(applicant);
 
-            return new SuccessDataResult<GetByIdApplicantResponse>(applicantResponse);
+            return new SuccessDataResult<GetByIdApplicantResponse>(applicantResponse,"Received successfully");
         }
         public async Task<IDataResult<CreateApplicantResponse>> AddAsync(CreateApplicantRequest request)
         {
@@ -38,7 +38,7 @@ namespace Business.Concretes
 
             CreateApplicantResponse applicantResponse = _mapper.Map<CreateApplicantResponse>(applicant);
 
-            return new SuccessDataResult<CreateApplicantResponse>(applicantResponse);
+            return new SuccessDataResult<CreateApplicantResponse>(applicantResponse,"Added successfully");
         }
         public async Task<IDataResult<UpdateApplicantResponse>> UpdateAsync(UpdateApplicantRequest request)
         {
@@ -47,17 +47,15 @@ namespace Business.Concretes
             await _applicantRepository.UpdateAsync(applicant);
 
             UpdateApplicantResponse applicantResponse = _mapper.Map<UpdateApplicantResponse>(applicant);
-            return new SuccessDataResult<UpdateApplicantResponse>(applicantResponse);
+            return new SuccessDataResult<UpdateApplicantResponse>(applicantResponse,"Updated successfully");
         }
-        public async Task<IDataResult<DeleteApplicantResponse>> DeleteAsync(DeleteApplicantRequest request)
+        public async Task<IResult> DeleteAsync(DeleteApplicantRequest request)
         {
             Applicant applicant = await _applicantRepository.GetAsync(a => a.Id == request.Id);
             applicant.DeletedDate = DateTime.UtcNow;
             await _applicantRepository.DeleteAsync(applicant);
 
-            DeleteApplicantResponse applicantResponse = _mapper.Map<DeleteApplicantResponse>(applicant);
-
-            return new SuccessDataResult<DeleteApplicantResponse>(applicantResponse);
+            return new SuccessResult("Deleted successfully");
         }
 
         public async Task<IDataResult<List<GetAllApplicantResponse>>> GetAllAsync()
@@ -65,7 +63,7 @@ namespace Business.Concretes
             List<Applicant> applicants = await _applicantRepository.GetAllAsync();
             List<GetAllApplicantResponse> getAllApplicants = _mapper.Map<List<GetAllApplicantResponse>>(applicants);
 
-            return new SuccessDataResult<List<GetAllApplicantResponse>>(getAllApplicants);
+            return new SuccessDataResult<List<GetAllApplicantResponse>>(getAllApplicants,"Listed successfully");
         }
 
     }
