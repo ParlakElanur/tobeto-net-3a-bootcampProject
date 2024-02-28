@@ -28,24 +28,6 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Blacklists",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Reason = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ApplicantId = table.Column<int>(type: "int", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Blacklists", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "BootcampStates",
                 columns: table => new
                 {
@@ -87,18 +69,11 @@ namespace DataAccess.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false),
-                    About = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BlacklistId = table.Column<int>(type: "int", nullable: false)
+                    About = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Applicants", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Applicants_Blacklists_BlacklistId",
-                        column: x => x.BlacklistId,
-                        principalTable: "Blacklists",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Applicants_Users_Id",
                         column: x => x.Id,
@@ -141,6 +116,30 @@ namespace DataAccess.Migrations
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Blacklists",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Reason = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ApplicantId = table.Column<int>(type: "int", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Blacklists", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_Blacklists_Applicants_ApplicantId",
+                        column: x => x.ApplicantId,
+                        principalTable: "Applicants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -212,11 +211,6 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Applicants_BlacklistId",
-                table: "Applicants",
-                column: "BlacklistId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Applications_ApplicantId",
                 table: "Applications",
                 column: "ApplicantId");
@@ -230,6 +224,12 @@ namespace DataAccess.Migrations
                 name: "IX_Applications_BootcampId",
                 table: "Applications",
                 column: "BootcampId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Blacklists_ApplicantId",
+                table: "Blacklists",
+                column: "ApplicantId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Bootcamps_BootcampStateId",
@@ -249,10 +249,10 @@ namespace DataAccess.Migrations
                 name: "Applications");
 
             migrationBuilder.DropTable(
-                name: "Employees");
+                name: "Blacklists");
 
             migrationBuilder.DropTable(
-                name: "Applicants");
+                name: "Employees");
 
             migrationBuilder.DropTable(
                 name: "ApplicationStates");
@@ -261,7 +261,7 @@ namespace DataAccess.Migrations
                 name: "Bootcamps");
 
             migrationBuilder.DropTable(
-                name: "Blacklists");
+                name: "Applicants");
 
             migrationBuilder.DropTable(
                 name: "BootcampStates");

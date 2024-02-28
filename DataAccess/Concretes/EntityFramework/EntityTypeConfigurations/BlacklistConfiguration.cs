@@ -23,7 +23,7 @@ namespace DataAccess.Concretes.EntityFramework.EntityTypeConfigurations
             builder.Property(b => b.Date).HasColumnName("Date");
             builder.Property(b => b.ApplicantId).HasColumnName("ApplicantId");
 
-            builder.HasMany(b => b.Applicants);
+            builder.HasOne(b => b.Applicant);
         }
     }
 }

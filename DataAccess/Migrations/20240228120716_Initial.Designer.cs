@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(BaseDbContext))]
-    [Migration("20240227224817_Initial")]
+    [Migration("20240228120716_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -135,6 +135,9 @@ namespace DataAccess.Migrations
                         .HasColumnName("UpdatedDate");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicantId")
+                        .IsUnique();
 
                     b.ToTable("Blacklists", (string)null);
                 });
@@ -287,11 +290,6 @@ namespace DataAccess.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("About");
 
-                    b.Property<int>("BlacklistId")
-                        .HasColumnType("int");
-
-                    b.HasIndex("BlacklistId");
-
                     b.ToTable("Applicants", (string)null);
                 });
 
@@ -346,6 +344,17 @@ namespace DataAccess.Migrations
                     b.Navigation("Bootcamp");
                 });
 
+            modelBuilder.Entity("Entities.Concretes.Blacklist", b =>
+                {
+                    b.HasOne("Entities.Concretes.Applicant", "Applicant")
+                        .WithOne("Blacklist")
+                        .HasForeignKey("Entities.Concretes.Blacklist", "ApplicantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Applicant");
+                });
+
             modelBuilder.Entity("Entities.Concretes.Bootcamp", b =>
                 {
                     b.HasOne("Entities.Concretes.BootcampState", "BootcampState")
@@ -367,19 +376,11 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Entities.Concretes.Applicant", b =>
                 {
-                    b.HasOne("Entities.Concretes.Blacklist", "Blacklist")
-                        .WithMany("Applicants")
-                        .HasForeignKey("BlacklistId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("Entities.Concretes.User", null)
                         .WithOne()
                         .HasForeignKey("Entities.Concretes.Applicant", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Blacklist");
                 });
 
             modelBuilder.Entity("Entities.Concretes.Employee", b =>
@@ -405,11 +406,6 @@ namespace DataAccess.Migrations
                     b.Navigation("Applications");
                 });
 
-            modelBuilder.Entity("Entities.Concretes.Blacklist", b =>
-                {
-                    b.Navigation("Applicants");
-                });
-
             modelBuilder.Entity("Entities.Concretes.Bootcamp", b =>
                 {
                     b.Navigation("Applications");
@@ -423,6 +419,9 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Entities.Concretes.Applicant", b =>
                 {
                     b.Navigation("Applications");
+
+                    b.Navigation("Blacklist")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Entities.Concretes.Instructor", b =>

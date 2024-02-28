@@ -15,7 +15,6 @@ namespace Entities.Concretes
 
         public Blacklist()
         {
-            Applicants = new HashSet<Applicant>();
         }
         public Blacklist(string reason, DateTime date, int applicantId)
         {
@@ -23,6 +22,6 @@ namespace Entities.Concretes
             Date = date;
             ApplicantId = applicantId;
         }
-        public ICollection<Applicant> Applicants { get; set; }
+        public Applicant Applicant { get; set; }
     }
 }
