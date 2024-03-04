@@ -33,7 +33,6 @@ namespace Business.Concretes
         public async Task<IDataResult<CreateApplicantResponse>> AddAsync(CreateApplicantRequest request)
         {
             Applicant applicant = _mapper.Map<Applicant>(request);
-            applicant.CreatedDate = DateTime.UtcNow;
             await _applicantRepository.AddAsync(applicant);
 
             CreateApplicantResponse applicantResponse = _mapper.Map<CreateApplicantResponse>(applicant);
@@ -43,7 +42,6 @@ namespace Business.Concretes
         public async Task<IDataResult<UpdateApplicantResponse>> UpdateAsync(UpdateApplicantRequest request)
         {
             Applicant applicant = _mapper.Map<Applicant>(request);
-            applicant.UpdatedDate = DateTime.UtcNow;
             await _applicantRepository.UpdateAsync(applicant);
 
             UpdateApplicantResponse applicantResponse = _mapper.Map<UpdateApplicantResponse>(applicant);
@@ -52,7 +50,6 @@ namespace Business.Concretes
         public async Task<IResult> DeleteAsync(DeleteApplicantRequest request)
         {
             Applicant applicant = await _applicantRepository.GetAsync(a => a.Id == request.Id);
-            applicant.DeletedDate = DateTime.UtcNow;
             await _applicantRepository.DeleteAsync(applicant);
 
             return new SuccessResult("Deleted successfully");

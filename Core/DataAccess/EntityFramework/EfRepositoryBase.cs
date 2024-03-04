@@ -33,6 +33,7 @@ namespace Core.DataAccess.EntityFramework
         }
         public async Task<TEntity> UpdateAsync(TEntity entity)
         {
+            entity.UpdatedDate = DateTime.UtcNow;
             Context.Update(entity);
             await Context.SaveChangesAsync();
             return entity;

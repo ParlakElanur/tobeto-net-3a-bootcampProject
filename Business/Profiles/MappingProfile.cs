@@ -15,6 +15,7 @@ using Business.Responses.Bootcamp;
 using Business.Responses.BootcampState;
 using Business.Responses.Employee;
 using Business.Responses.Instructor;
+using Business.Responses.User;
 using Entities.Concretes;
 using System;
 using System.Collections.Generic;
@@ -78,7 +79,7 @@ namespace Business.Profiles
             CreateMap<CreateBootcampRequest, Bootcamp>().ReverseMap();
             CreateMap<Bootcamp, CreateBootcampResponse>().ReverseMap();
 
-            CreateMap<UpdateBootrcampRequest, Bootcamp>().ReverseMap();
+            CreateMap<UpdateBootcampRequest, Bootcamp>().ReverseMap();
             CreateMap<Bootcamp, UpdateBootcampResponse>().ReverseMap();
 
             CreateMap<Bootcamp, GetAllBootcampResponse>().ReverseMap();
@@ -115,6 +116,11 @@ namespace Business.Profiles
             CreateMap<Instructor, UpdateInstructorResponse>().ReverseMap();
 
             CreateMap<Instructor, GetAllInstructorResponse>().ReverseMap();
+
+            //User
+            CreateMap<User, GetByIdUserResponse>().ReverseMap();
+
+            CreateMap<User, GetAllUserResponse>().ReverseMap();
         }
     }
 }

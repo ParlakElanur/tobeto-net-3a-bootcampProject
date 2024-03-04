@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Business.Requests.Bootcamp
 {
-    public class UpdateBootrcampRequest
+    public class UpdateBootcampRequest 
     {
         public int Id { get; set; }
         public string Name { get; set; }

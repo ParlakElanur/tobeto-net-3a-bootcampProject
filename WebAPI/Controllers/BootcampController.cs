@@ -30,7 +30,7 @@ namespace WebAPI.Controllers
             return HandleDataResult(await _bootcampService.AddAsync(request));
         }
         [HttpPut]
-        public async Task<IActionResult> UpdateAsync(UpdateBootrcampRequest request)
+        public async Task<IActionResult> UpdateAsync(UpdateBootcampRequest request)
         {
             return HandleDataResult(await _bootcampService.UpdateAsync(request));
         }

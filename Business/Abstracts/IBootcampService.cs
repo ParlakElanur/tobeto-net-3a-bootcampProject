@@ -13,7 +13,7 @@ namespace Business.Abstracts
     {
         Task<IDataResult<GetByIdBootcampResponse>> GetAsync(int id);
         Task<IDataResult<CreateBootcampResponse>> AddAsync(CreateBootcampRequest request);
-        Task<IDataResult<UpdateBootcampResponse>> UpdateAsync(UpdateBootrcampRequest request);
+        Task<IDataResult<UpdateBootcampResponse>> UpdateAsync(UpdateBootcampRequest request);
         Task<IResult> DeleteAsync(DeleteBootcampRequest request);
         Task<IDataResult<List<GetAllBootcampResponse>>> GetAllAsync();
     }
