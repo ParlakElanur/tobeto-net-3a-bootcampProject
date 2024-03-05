@@ -2,6 +2,7 @@
 using Business.Abstracts;
 using Business.Requests.Instructor;
 using Business.Responses.Instructor;
+using Business.Rules;
 using Core.Utilities.Results;
 using DataAccess.Abstracts;
 using Entities.Concretes;
@@ -17,13 +18,16 @@ namespace Business.Concretes
     {
         private readonly IInstructorRepository _intructorRepository;
         private readonly IMapper _mapper;
-        public InstructorManager(IInstructorRepository instructorRepository, IMapper mapper)
+        private readonly InstructorBusinessRules _rules;
+        public InstructorManager(IInstructorRepository instructorRepository, IMapper mapper, InstructorBusinessRules rules)
         {
             _intructorRepository = instructorRepository;
             _mapper = mapper;
+            _rules = rules;
         }
         public async Task<IDataResult<GetByIdInstructorResponse>> GetAsync(int id)
         {
+            await _rules.CheckIfInstructorIdNotExists(id);
             Instructor instructor = await _intructorRepository.GetAsync(i => i.Id == id);
             GetByIdInstructorResponse instructorResponse = _mapper.Map<GetByIdInstructorResponse>(instructor);
 
@@ -40,6 +44,7 @@ namespace Business.Concretes
         }
         public async Task<IDataResult<UpdateInstructorResponse>> UpdateAsync(UpdateInstructorRequest request)
         {
+            await _rules.CheckIfInstructorIdNotExists(request.Id);
             Instructor instructor = _mapper.Map<Instructor>(request);
             instructor.UpdatedDate = DateTime.UtcNow;
             await _intructorRepository.UpdateAsync(instructor);
@@ -49,10 +54,11 @@ namespace Business.Concretes
         }
         public async Task<IResult> DeleteAsync(DeleteInstructorRequest request)
         {
+            await _rules.CheckIfInstructorIdNotExists(request.Id);
             Instructor instructor = await _intructorRepository.GetAsync(i => i.Id == request.Id);
             instructor.DeletedDate = DateTime.Now;
-           await _intructorRepository.DeleteAsync(instructor);
-            
+            await _intructorRepository.DeleteAsync(instructor);
+
             return new SuccessResult("Deleted successfully");
         }
         public async Task<IDataResult<List<GetAllInstructorResponse>>> GetAllAsync()
@@ -61,6 +67,13 @@ namespace Business.Concretes
             List<GetAllInstructorResponse> getAllInstructors = _mapper.Map<List<GetAllInstructorResponse>>(instructors);
 
             return new SuccessDataResult<List<GetAllInstructorResponse>>(getAllInstructors, "Listed successfully");
+        }
+        public async Task<GetByIdInstructorResponse> GetById(int id)
+        {
+            Instructor instructor = await _intructorRepository.GetAsync(i => i.Id == id);
+            GetByIdInstructorResponse instructorResponse = _mapper.Map<GetByIdInstructorResponse>(instructor);
+
+            return instructorResponse;
         }
     }
 }

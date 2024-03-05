@@ -2,6 +2,7 @@
 using Business.Abstracts;
 using Business.Requests.Blacklist;
 using Business.Responses.Blacklist;
+using Business.Rules;
 using Core.Utilities.Results;
 using DataAccess.Abstracts;
 using Entities.Concretes;
@@ -17,14 +18,16 @@ namespace Business.Concretes
     {
         private readonly IBlacklistRepository _blacklistRepository;
         private readonly IMapper _mapper;
-
-        public BlacklistManager(IBlacklistRepository blacklistRepository, IMapper mapper)
+        private readonly BlacklistBusinessRules _rules;
+        public BlacklistManager(IBlacklistRepository blacklistRepository, IMapper mapper, BlacklistBusinessRules rules)
         {
             _blacklistRepository = blacklistRepository;
             _mapper = mapper;
+            _rules = rules;
         }
         public async Task<IDataResult<GetByIdBlacklistResponse>> GetAsync(int id)
         {
+            await _rules.CheckIfBlacklistIdNotExists(id);
             Blacklist blacklist = await _blacklistRepository.GetAsync(b => b.Id == id);
             GetByIdBlacklistResponse blacklistResponse = _mapper.Map<GetByIdBlacklistResponse>(blacklist);
 
@@ -32,6 +35,7 @@ namespace Business.Concretes
         }
         public async Task<IDataResult<CreateBlacklistResponse>> AddAsync(CreateBlacklistRequest request)
         {
+            await _rules.CheckIfApplicantNotExists(request.ApplicantId);
             Blacklist blacklist = _mapper.Map<Blacklist>(request);
             blacklist.CreatedDate = DateTime.UtcNow;
             await _blacklistRepository.AddAsync(blacklist);
@@ -42,6 +46,7 @@ namespace Business.Concretes
         }
         public async Task<IDataResult<UpdateBlacklistResponse>> UpdateAsync(UpdateBlacklistRequest request)
         {
+            await _rules.CheckIfBlacklistIdNotExists(request.Id);
             Blacklist blacklist = _mapper.Map<Blacklist>(request);
             blacklist.UpdatedDate = DateTime.UtcNow;
             await _blacklistRepository.UpdateAsync(blacklist);
@@ -52,6 +57,7 @@ namespace Business.Concretes
         }
         public async Task<IResult> DeleteAsync(DeleteBlacklistRequest request)
         {
+            await _rules.CheckIfBlacklistIdNotExists(request.Id);
             Blacklist blacklist = await _blacklistRepository.GetAsync(b => b.Id == request.Id);
             blacklist.DeletedDate = DateTime.UtcNow;
             await _blacklistRepository.DeleteAsync(blacklist);

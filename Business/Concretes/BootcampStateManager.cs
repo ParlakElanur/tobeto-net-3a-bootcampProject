@@ -2,6 +2,7 @@
 using Business.Abstracts;
 using Business.Requests.BootcampState;
 using Business.Responses.BootcampState;
+using Business.Rules;
 using Core.Utilities.Results;
 using DataAccess.Abstracts;
 using Entities.Concretes;
@@ -17,14 +18,16 @@ namespace Business.Concretes
     {
         private readonly IBootcampStateRepository _bootcampStateRepository;
         private readonly IMapper _mapper;
-
-        public BootcampStateManager(IBootcampStateRepository bootcampStateRepository, IMapper mapper)
+        private readonly BootcampStateBusinessRules _rules;
+        public BootcampStateManager(IBootcampStateRepository bootcampStateRepository, IMapper mapper, BootcampStateBusinessRules rules)
         {
             _bootcampStateRepository = bootcampStateRepository;
             _mapper = mapper;
+            _rules = rules;
         }
         public async Task<IDataResult<GetByIdBootcampStateResponse>> GetAsync(int id)
         {
+            await _rules.CheckIfBootcampStateIdNotExists(id);
             BootcampState bootcampState = await _bootcampStateRepository.GetAsync(b => b.Id == id);
             GetByIdBootcampStateResponse bootcampStateResponse = _mapper.Map<GetByIdBootcampStateResponse>(bootcampState);
 
@@ -32,6 +35,7 @@ namespace Business.Concretes
         }
         public async Task<IDataResult<CreateBootcampStateResponse>> AddAsync(CreateBootcampStateRequest request)
         {
+            await _rules.CheckIfBootcampStateNameNotExists(request.Name);
             BootcampState bootcampState = _mapper.Map<BootcampState>(request);
             bootcampState.CreatedDate = DateTime.UtcNow;
             await _bootcampStateRepository.AddAsync(bootcampState);
@@ -41,6 +45,7 @@ namespace Business.Concretes
         }
         public async Task<IDataResult<UpdateBootcampStateResponse>> UpdateAsync(UpdateBootcampStateRequest request)
         {
+            await _rules.CheckIfBootcampStateIdNotExists(request.Id);
             BootcampState bootcampState = _mapper.Map<BootcampState>(request);
             bootcampState.UpdatedDate = DateTime.UtcNow;
             await _bootcampStateRepository.UpdateAsync(bootcampState);
@@ -50,6 +55,7 @@ namespace Business.Concretes
         }
         public async Task<IResult> DeleteAsync(DeleteBootcampStateRequest request)
         {
+            await _rules.CheckIfBootcampStateIdNotExists(request.Id);
             BootcampState bootcampState = await _bootcampStateRepository.GetAsync(b => b.Id == request.Id);
             bootcampState.DeletedDate = DateTime.UtcNow;
             await _bootcampStateRepository.DeleteAsync(bootcampState);
@@ -62,6 +68,13 @@ namespace Business.Concretes
             List<GetAllBootcampStateResponse> getAllBootcampStates = _mapper.Map<List<GetAllBootcampStateResponse>>(bootcampStates);
 
             return new SuccessDataResult<List<GetAllBootcampStateResponse>>(getAllBootcampStates, "Listed successfully");
+        }
+        public async Task<GetByIdBootcampStateResponse> GetById(int id)
+        {
+            BootcampState bootcampState = await _bootcampStateRepository.GetAsync(b => b.Id == id);
+            GetByIdBootcampStateResponse bootcampStateResponse = _mapper.Map<GetByIdBootcampStateResponse>(bootcampState);
+
+            return bootcampStateResponse;
         }
     }
 }

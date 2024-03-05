@@ -30,7 +30,7 @@ namespace Business.Concretes
         }
         public async Task<IDataResult<GetByIdBootcampResponse>> GetAsync(int id)
         {
-            await _rules.CheckIfBootcampNotExists(id);
+            await _rules.CheckIfBootcampIdNotExists(id);
             Bootcamp bootcamp = await _bootcampRepository.GetAsync(b => b.Id == id);
             GetByIdBootcampResponse bootcampResponse = _mapper.Map<GetByIdBootcampResponse>(bootcamp);
 
@@ -38,7 +38,7 @@ namespace Business.Concretes
         }
         public async Task<IDataResult<CreateBootcampResponse>> AddAsync(CreateBootcampRequest request)
         {
-            await _rules.CheckIfBootcampNameNotExists(request.Name.TrimStart());
+            await _rules.CheckIfBootcampNotExists(request.InstructorId, request.BootcampStateId);
             Bootcamp bootcamp = _mapper.Map<Bootcamp>(request);
             bootcamp.CreatedDate = DateTime.UtcNow;
             await _bootcampRepository.AddAsync(bootcamp);
@@ -48,7 +48,7 @@ namespace Business.Concretes
         }
         public async Task<IDataResult<UpdateBootcampResponse>> UpdateAsync(UpdateBootcampRequest request)
         {
-            await _rules.CheckIfBootcampNotExists(request.Id);
+            await _rules.CheckIfBootcampIdNotExists(request.Id);
             Bootcamp bootcamp = _mapper.Map<Bootcamp>(request);
             bootcamp.UpdatedDate = DateTime.UtcNow;
             await _bootcampRepository.UpdateAsync(bootcamp);
@@ -58,7 +58,7 @@ namespace Business.Concretes
         }
         public async Task<IResult> DeleteAsync(DeleteBootcampRequest request)
         {
-            await _rules.CheckIfBootcampNotExists(request.Id);
+            await _rules.CheckIfBootcampIdNotExists(request.Id);
             Bootcamp bootcamp = await _bootcampRepository.GetAsync(b => b.Id == request.Id);
             await _bootcampRepository.DeleteAsync(bootcamp);
 
@@ -71,6 +71,13 @@ namespace Business.Concretes
 
             return new SuccessDataResult<List<GetAllBootcampResponse>>(getAllBootcamps, "Listed successfully");
         }
-        
+
+        public async Task<GetByIdBootcampResponse> GetById(int id)
+        {
+            Bootcamp bootcamp =await _bootcampRepository.GetAsync(b => b.Id == id);
+            GetByIdBootcampResponse bootcampResponse=_mapper.Map<GetByIdBootcampResponse>(bootcamp);
+
+            return bootcampResponse;
+        }
     }
 }
