@@ -36,7 +36,6 @@ namespace Business.Concretes
         public async Task<IDataResult<CreateInstructorResponse>> AddAsync(CreateInstructorRequest request)
         {
             Instructor instructor = _mapper.Map<Instructor>(request);
-            instructor.CreatedDate = DateTime.UtcNow;
             await _intructorRepository.AddAsync(instructor);
 
             CreateInstructorResponse instructorResponse = _mapper.Map<CreateInstructorResponse>(instructor);
@@ -45,8 +44,15 @@ namespace Business.Concretes
         public async Task<IDataResult<UpdateInstructorResponse>> UpdateAsync(UpdateInstructorRequest request)
         {
             await _rules.CheckIfInstructorIdNotExists(request.Id);
-            Instructor instructor = _mapper.Map<Instructor>(request);
-            instructor.UpdatedDate = DateTime.UtcNow;
+            //Instructor instructor = _mapper.Map<Instructor>(request);
+            Instructor instructor = await _intructorRepository.GetAsync(i => i.Id == request.Id);
+            instructor.UserName = request.UserName;
+            instructor.FirstName = request.FirstName;
+            instructor.LastName = request.LastName;
+            instructor.DateOfBirth = request.DateOfBirth;
+            instructor.Email = request.Email;
+            instructor.Password = request.Password;
+            instructor.CompanyName=request.CompanyName;
             await _intructorRepository.UpdateAsync(instructor);
 
             UpdateInstructorResponse instructorResponse = _mapper.Map<UpdateInstructorResponse>(instructor);
@@ -56,7 +62,6 @@ namespace Business.Concretes
         {
             await _rules.CheckIfInstructorIdNotExists(request.Id);
             Instructor instructor = await _intructorRepository.GetAsync(i => i.Id == request.Id);
-            instructor.DeletedDate = DateTime.Now;
             await _intructorRepository.DeleteAsync(instructor);
 
             return new SuccessResult("Deleted successfully");

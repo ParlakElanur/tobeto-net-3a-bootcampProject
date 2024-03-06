@@ -1,4 +1,4 @@
-﻿using Business.CrossCuttingConcerns.Rules;
+﻿using Core.CrossCuttingConcerns.Rules;
 using System;
 using System.Collections.Generic;
 using System.Linq;

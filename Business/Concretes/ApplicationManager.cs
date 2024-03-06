@@ -45,7 +45,11 @@ namespace Business.Concretes
         public async Task<IDataResult<UpdateApplicationResponse>> UpdateAsync(UpdateApplicationRequest request)
         {
             await _rules.CheckIfApplicationIdNotExists(request.Id);
-            Application application = _mapper.Map<Application>(request);
+            //Application application = _mapper.Map<Application>(request);
+            Application application = await _applicationRepository.GetAsync(a => a.Id == request.Id);
+            application.ApplicantId = request.ApplicantId;
+            application.BootcampId = request.BootcampId;
+            application.ApplicationStateId = request.ApplicationStateId;
             await _applicationRepository.UpdateAsync(application);
 
             UpdateApplicationResponse applicationResponse = _mapper.Map<UpdateApplicationResponse>(application);
@@ -59,7 +63,6 @@ namespace Business.Concretes
 
             return new SuccessResult("Deleted successfully");
         }
-
         public async Task<IDataResult<List<GetAllApplicationResponse>>> GetAllAsync()
         {
             List<Application> applications = await _applicationRepository.GetAllAsync();

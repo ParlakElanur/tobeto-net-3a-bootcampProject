@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Business.CrossCuttingConcerns.Rules
+namespace Core.CrossCuttingConcerns.Rules
 {
     public abstract class BaseBusinessRules
     {
-
     }
 }

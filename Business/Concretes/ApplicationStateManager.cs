@@ -38,7 +38,6 @@ namespace Business.Concretes
         {
             await _rules.CheckIfApplicationStateNameNotExists(request.Name);
             ApplicationState applicationState = _mapper.Map<ApplicationState>(request);
-            applicationState.CreatedDate = DateTime.UtcNow;
             await _applicationStateRepository.AddAsync(applicationState);
 
             CreateApplicationStateResponse applicationStateResponse = _mapper.Map<CreateApplicationStateResponse>(applicationState);
@@ -47,8 +46,9 @@ namespace Business.Concretes
         public async Task<IDataResult<UpdateApplicationStateResponse>> UpdateAsync(UpdateApplicationStateRequest request)
         {
             await _rules.CheckIfApplicationStateIdNotExists(request.Id);
-            ApplicationState applicationState = _mapper.Map<ApplicationState>(request);
-            applicationState.UpdatedDate = DateTime.UtcNow;
+            //ApplicationState applicationState = _mapper.Map<ApplicationState>(request);
+            ApplicationState applicationState= await _applicationStateRepository.GetAsync(a => a.Id == request.Id);
+            applicationState.Name = request.Name;
             await _applicationStateRepository.UpdateAsync(applicationState);
 
             UpdateApplicationStateResponse applicationStateResponse = _mapper.Map<UpdateApplicationStateResponse>(applicationState);
@@ -58,7 +58,6 @@ namespace Business.Concretes
         {
             await _rules.CheckIfApplicationStateIdNotExists(request.Id);
             ApplicationState applicationState = await _applicationStateRepository.GetAsync(a => a.Id == request.Id);
-            applicationState.DeletedDate = DateTime.UtcNow;
             await _applicationStateRepository.DeleteAsync(applicationState);
 
             return new SuccessResult("Deleted successfully");
@@ -70,7 +69,6 @@ namespace Business.Concretes
 
             return new SuccessDataResult<List<GetAllApplicationStateResponse>>(getAllApplicationStates, "Listed successfully");
         }
-
         public async Task<GetByIdApplicationStateResponse> GetById(int id)
         {
             ApplicationState applicationState = await _applicationStateRepository.GetAsync(a => a.Id == id);

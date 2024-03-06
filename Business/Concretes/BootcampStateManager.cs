@@ -37,7 +37,6 @@ namespace Business.Concretes
         {
             await _rules.CheckIfBootcampStateNameNotExists(request.Name);
             BootcampState bootcampState = _mapper.Map<BootcampState>(request);
-            bootcampState.CreatedDate = DateTime.UtcNow;
             await _bootcampStateRepository.AddAsync(bootcampState);
 
             CreateBootcampStateResponse bootcampStateResponse = _mapper.Map<CreateBootcampStateResponse>(bootcampState);
@@ -46,8 +45,9 @@ namespace Business.Concretes
         public async Task<IDataResult<UpdateBootcampStateResponse>> UpdateAsync(UpdateBootcampStateRequest request)
         {
             await _rules.CheckIfBootcampStateIdNotExists(request.Id);
-            BootcampState bootcampState = _mapper.Map<BootcampState>(request);
-            bootcampState.UpdatedDate = DateTime.UtcNow;
+            //BootcampState bootcampState = _mapper.Map<BootcampState>(request);
+            BootcampState bootcampState = await _bootcampStateRepository.GetAsync(b => b.Id == request.Id);
+            bootcampState.Name = request.Name;
             await _bootcampStateRepository.UpdateAsync(bootcampState);
 
             UpdateBootcampStateResponse bootcampStateResponse = _mapper.Map<UpdateBootcampStateResponse>(bootcampState);
@@ -57,7 +57,6 @@ namespace Business.Concretes
         {
             await _rules.CheckIfBootcampStateIdNotExists(request.Id);
             BootcampState bootcampState = await _bootcampStateRepository.GetAsync(b => b.Id == request.Id);
-            bootcampState.DeletedDate = DateTime.UtcNow;
             await _bootcampStateRepository.DeleteAsync(bootcampState);
 
             return new SuccessResult("Deleted successfully");

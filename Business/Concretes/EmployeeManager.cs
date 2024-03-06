@@ -36,7 +36,6 @@ namespace Business.Concretes
         public async Task<IDataResult<CreateEmployeeResponse>> AddAsync(CreateEmployeeRequest request)
         {
             Employee employee = _mapper.Map<Employee>(request);
-            employee.CreatedDate = DateTime.UtcNow;
             await _employeeRepository.AddAsync(employee);
 
             CreateEmployeeResponse employeeResponse = _mapper.Map<CreateEmployeeResponse>(employee);
@@ -45,8 +44,15 @@ namespace Business.Concretes
         public async Task<IDataResult<UpdateEmployeeResponse>> UpdateAsync(UpdateEmployeeRequest request)
         {
             await _rules.CheckIfEmployeeIdNotExists(request.Id);
-            Employee employee = _mapper.Map<Employee>(request);
-            employee.UpdatedDate = DateTime.Now;
+            //Employee employee = _mapper.Map<Employee>(request);
+            Employee employee = await _employeeRepository.GetAsync(e => e.Id == request.Id);
+            employee.UserName = request.UserName;
+            employee.FirstName = request.FirstName;
+            employee.LastName = request.LastName;
+            employee.DateOfBirth = request.DateOfBirth;
+            employee.Email = request.Email;
+            employee.Password = request.Password;
+            employee.Position = request.Position;
             await _employeeRepository.UpdateAsync(employee);
 
             UpdateEmployeeResponse employeeResponse = _mapper.Map<UpdateEmployeeResponse>(employee);
@@ -56,7 +62,6 @@ namespace Business.Concretes
         {
             await _rules.CheckIfEmployeeIdNotExists(request.Id);
             Employee employee = await _employeeRepository.GetAsync(e => e.Id == request.Id);
-            employee.DeletedDate = DateTime.Now;
             await _employeeRepository.DeleteAsync(employee);
 
             return new SuccessResult("Deleted successfully");

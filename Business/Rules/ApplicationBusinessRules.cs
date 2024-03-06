@@ -1,5 +1,5 @@
 ﻿using Business.Abstracts;
-using Business.CrossCuttingConcerns.Rules;
+using Core.CrossCuttingConcerns.Rules;
 using Core.Exceptions.Types;
 using DataAccess.Abstracts;
 using Entities.Concretes;

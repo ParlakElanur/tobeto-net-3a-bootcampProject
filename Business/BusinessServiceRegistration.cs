@@ -1,6 +1,6 @@
 ﻿using Business.Abstracts;
 using Business.Concretes;
-using Business.CrossCuttingConcerns.Rules;
+using Core.CrossCuttingConcerns.Rules;
 using Core.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using System;

@@ -38,15 +38,23 @@ namespace Business.Concretes
         {
             Applicant applicant = _mapper.Map<Applicant>(request);
             await _applicantRepository.AddAsync(applicant);
-
             CreateApplicantResponse applicantResponse = _mapper.Map<CreateApplicantResponse>(applicant);
 
             return new SuccessDataResult<CreateApplicantResponse>(applicantResponse, "Added successfully");
         }
         public async Task<IDataResult<UpdateApplicantResponse>> UpdateAsync(UpdateApplicantRequest request)
         {
-            await _rules.CheckIfApplicantNotExists(request.Id);
-            Applicant applicant = _mapper.Map<Applicant>(request);
+            await _rules.CheckIfApplicantIdNotExists(request.Id);
+
+            //Applicant applicant = _mapper.Map<Applicant>(request);
+            Applicant applicant = await _applicantRepository.GetAsync(a => a.Id == request.Id);
+            applicant.UserName = request.UserName;
+            applicant.FirstName = request.FirstName;
+            applicant.LastName = request.LastName;
+            applicant.DateOfBirth = request.DateOfBirth;
+            applicant.Email = request.Email;
+            applicant.Password = request.Password;
+            applicant.About = request.About;
             await _applicantRepository.UpdateAsync(applicant);
 
             UpdateApplicantResponse applicantResponse = _mapper.Map<UpdateApplicantResponse>(applicant);
@@ -54,7 +62,7 @@ namespace Business.Concretes
         }
         public async Task<IResult> DeleteAsync(DeleteApplicantRequest request)
         {
-            await _rules.CheckIfApplicantNotExists(request.Id);
+            await _rules.CheckIfApplicantIdNotExists(request.Id);
             Applicant applicant = await _applicantRepository.GetAsync(a => a.Id == request.Id);
             await _applicantRepository.DeleteAsync(applicant);
 
@@ -67,11 +75,10 @@ namespace Business.Concretes
 
             return new SuccessDataResult<List<GetAllApplicantResponse>>(getAllApplicants, "Listed successfully");
         }
-
         public async Task<GetByIdApplicantResponse> GetById(int id)
         {
-            Applicant applicant=await _applicantRepository.GetAsync(a=>a.Id== id);
-            GetByIdApplicantResponse applicantResponse=_mapper.Map<GetByIdApplicantResponse>(applicant);
+            Applicant applicant = await _applicantRepository.GetAsync(a => a.Id == id);
+            GetByIdApplicantResponse applicantResponse = _mapper.Map<GetByIdApplicantResponse>(applicant);
 
             return applicantResponse;
         }
