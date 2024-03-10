@@ -36,7 +36,7 @@ namespace Business.Concretes
         }
         public async Task<IDataResult<CreateApplicationStateResponse>> AddAsync(CreateApplicationStateRequest request)
         {
-            await _rules.CheckIfApplicationStateNameNotExists(request.Name);
+            await _rules.CheckIfApplicationStateNameNotExists(request.Name.TrimStart());
             ApplicationState applicationState = _mapper.Map<ApplicationState>(request);
             await _applicationStateRepository.AddAsync(applicationState);
 

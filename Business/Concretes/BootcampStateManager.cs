@@ -35,7 +35,7 @@ namespace Business.Concretes
         }
         public async Task<IDataResult<CreateBootcampStateResponse>> AddAsync(CreateBootcampStateRequest request)
         {
-            await _rules.CheckIfBootcampStateNameNotExists(request.Name);
+            await _rules.CheckIfBootcampStateNameNotExists(request.Name.TrimStart());
             BootcampState bootcampState = _mapper.Map<BootcampState>(request);
             await _bootcampStateRepository.AddAsync(bootcampState);
 

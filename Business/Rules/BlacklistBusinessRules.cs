@@ -25,9 +25,9 @@ namespace Business.Rules
             if (isExists is null)
                 throw new BusinessException("BlacklistId does not exists");
         }
-        public async Task CheckIfApplicantNotExists(int id) 
+        public async Task CheckIfBlacklistNotExists(int applicantId) 
         {
-            var isExists = await _applicantService.GetById(id);
+            var isExists = await _applicantService.GetById(applicantId);
             if (isExists is null)
                 throw new BusinessException("ApplicantId does not exists");
         }

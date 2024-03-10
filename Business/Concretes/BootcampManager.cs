@@ -48,13 +48,14 @@ namespace Business.Concretes
         public async Task<IDataResult<UpdateBootcampResponse>> UpdateAsync(UpdateBootcampRequest request)
         {
             await _rules.CheckIfBootcampIdNotExists(request.Id);
+            await _rules.CheckIfBootcampNotExists(request.InstructorId, request.BootcampStateId);
             //Bootcamp bootcamp = _mapper.Map<Bootcamp>(request);
-            Bootcamp bootcamp= await _bootcampRepository.GetAsync(b => b.Id == request.Id);
+            Bootcamp bootcamp = await _bootcampRepository.GetAsync(b => b.Id == request.Id);
             bootcamp.Name = request.Name;
             bootcamp.InstructorId = request.InstructorId;
-            bootcamp.StartDate=request.StartDate;
-            bootcamp.EndDate=request.EndDate;
-            bootcamp.BootcampStateId= request.BootcampStateId;
+            bootcamp.StartDate = request.StartDate;
+            bootcamp.EndDate = request.EndDate;
+            bootcamp.BootcampStateId = request.BootcampStateId;
             await _bootcampRepository.UpdateAsync(bootcamp);
 
             UpdateBootcampResponse bootcampResponse = _mapper.Map<UpdateBootcampResponse>(bootcamp);
@@ -78,8 +79,8 @@ namespace Business.Concretes
 
         public async Task<GetByIdBootcampResponse> GetById(int id)
         {
-            Bootcamp bootcamp =await _bootcampRepository.GetAsync(b => b.Id == id);
-            GetByIdBootcampResponse bootcampResponse=_mapper.Map<GetByIdBootcampResponse>(bootcamp);
+            Bootcamp bootcamp = await _bootcampRepository.GetAsync(b => b.Id == id);
+            GetByIdBootcampResponse bootcampResponse = _mapper.Map<GetByIdBootcampResponse>(bootcamp);
 
             return bootcampResponse;
         }

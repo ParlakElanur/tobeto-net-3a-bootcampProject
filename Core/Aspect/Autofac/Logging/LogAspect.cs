@@ -22,7 +22,7 @@ namespace Core.Aspect.Autofac.Logging
         {
             if(loggerService.BaseType!= typeof(LoggerServiceBase))
             {
-                throw new Exception(AspectMessages.WrongLoggerType);
+                throw new ArgumentException(AspectMessages.WrongLoggerType);
             }
             _loggerServiceBase =(LoggerServiceBase) Activator.CreateInstance(loggerService);
             _httpContextAccessor =(IHttpContextAccessor) Activator.CreateInstance(typeof(HttpContextAccessor));

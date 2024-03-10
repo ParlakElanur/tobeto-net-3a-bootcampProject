@@ -3,6 +3,8 @@ using Business.Abstracts;
 using Business.Requests.Applicant;
 using Business.Responses.Applicant;
 using Business.Rules;
+using Core.Aspect.Autofac.Logging;
+using Core.CrossCuttingConcerns.Logging.Serilog.Loggers;
 using Core.Utilities.Results;
 using DataAccess.Abstracts;
 using Entities.Concretes;
@@ -34,6 +36,7 @@ namespace Business.Concretes
 
             return new SuccessDataResult<GetByIdApplicantResponse>(applicantResponse, "Received successfully");
         }
+        [LogAspect(typeof(MssqlLogger))]
         public async Task<IDataResult<CreateApplicantResponse>> AddAsync(CreateApplicantRequest request)
         {
             Applicant applicant = _mapper.Map<Applicant>(request);
@@ -68,6 +71,7 @@ namespace Business.Concretes
 
             return new SuccessResult("Deleted successfully");
         }
+        [LogAspect(typeof(MongoDbLogger))]
         public async Task<IDataResult<List<GetAllApplicantResponse>>> GetAllAsync()
         {
             List<Applicant> applicants = await _applicantRepository.GetAllAsync();
