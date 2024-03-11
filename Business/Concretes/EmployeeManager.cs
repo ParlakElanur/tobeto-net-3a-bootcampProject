@@ -50,8 +50,10 @@ namespace Business.Concretes
             employee.FirstName = request.FirstName;
             employee.LastName = request.LastName;
             employee.DateOfBirth = request.DateOfBirth;
+            employee.PasswordHash= request.PasswordHash;
+            employee.PasswordSalt= request.PasswordSalt;
             employee.Email = request.Email;
-            employee.Password = request.Password;
+            
             employee.Position = request.Position;
             await _employeeRepository.UpdateAsync(employee);
 

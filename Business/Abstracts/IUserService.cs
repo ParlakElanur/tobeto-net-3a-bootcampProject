@@ -1,5 +1,6 @@
 ﻿using Business.Responses.User;
 using Core.Utilities.Results;
+using Core.Utilities.Security.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,6 @@ namespace Business.Abstracts
     {
         Task<IDataResult<GetByIdUserResponse>> GetAsync(int id);
         Task<IDataResult<List<GetAllUserResponse>>> GetAllAsync();
+        Task<DataResult<User>> GetByMailAsync(string email); 
     }
 }

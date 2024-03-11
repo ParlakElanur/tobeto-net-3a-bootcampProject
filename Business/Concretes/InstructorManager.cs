@@ -51,7 +51,8 @@ namespace Business.Concretes
             instructor.LastName = request.LastName;
             instructor.DateOfBirth = request.DateOfBirth;
             instructor.Email = request.Email;
-            instructor.Password = request.Password;
+            instructor.PasswordHash = request.PasswordHash;
+            instructor.PasswordSalt = request.PasswordSalt;
             instructor.CompanyName=request.CompanyName;
             await _intructorRepository.UpdateAsync(instructor);
 

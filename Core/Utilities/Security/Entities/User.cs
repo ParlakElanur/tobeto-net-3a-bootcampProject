@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.Concretes
+namespace Core.Utilities.Security.Entities
 {
-    public class UserA : BaseEntity<int>
+    public class User : BaseEntity<int>
     {
         public string UserName { get; set; }
         public string FirstName { get; set; }
@@ -17,13 +17,13 @@ namespace Entities.Concretes
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
 
+        public ICollection<UserOperationClaim> UserOperationClaims { get; set; }
 
-        public UserA()
+        public User()
         {
-
+            UserOperationClaims = new HashSet<UserOperationClaim>();
         }
-
-        public UserA(int id, string userName, string firstName, string lastName, DateTime dateOfBirth, string email, byte[] passwordHash, byte[] passwordSalt) : this()
+        public User(int id,string userName, string firstName, string lastName, DateTime dateOfBirth, string email, byte[] passwordHash, byte[] passwordSalt)
         {
             Id = id;
             UserName = userName;

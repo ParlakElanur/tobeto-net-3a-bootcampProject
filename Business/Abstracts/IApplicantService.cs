@@ -1,6 +1,7 @@
 ﻿using Business.Requests.Applicant;
 using Business.Responses.Applicant;
 using Core.Utilities.Results;
+using Core.Utilities.Security.JWT;
 using Entities.Concretes;
 using System;
 using System.Collections.Generic;

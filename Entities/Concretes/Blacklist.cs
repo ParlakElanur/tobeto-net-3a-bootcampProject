@@ -16,8 +16,9 @@ namespace Entities.Concretes
         public Blacklist()
         {
         }
-        public Blacklist(string reason, DateTime date, int applicantId)
+        public Blacklist(int id, string reason, DateTime date, int applicantId) : this()
         {
+            Id = id;
             Reason = reason;
             Date = date;
             ApplicantId = applicantId;

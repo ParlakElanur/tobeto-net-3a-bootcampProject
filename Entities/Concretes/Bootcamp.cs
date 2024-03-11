@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Entities.Concretes
 {
-    public class Bootcamp:BaseEntity<int>
+    public class Bootcamp : BaseEntity<int>
     {
         public string Name { get; set; }
         public int InstructorId { get; set; }
@@ -19,8 +19,9 @@ namespace Entities.Concretes
         {
             Applications = new HashSet<Application>();
         }
-        public Bootcamp(string name, int ınstructorId, DateTime startDate, DateTime endDate, int bootcampStateId)
+        public Bootcamp(int id, string name, int ınstructorId, DateTime startDate, DateTime endDate, int bootcampStateId) : this()
         {
+            Id = id;
             Name = name;
             InstructorId = ınstructorId;
             StartDate = startDate;
@@ -29,6 +30,6 @@ namespace Entities.Concretes
         }
         public ICollection<Application> Applications { get; set; }
         public Instructor Instructor { get; set; }
-        public BootcampState BootcampState { get; set; }    
+        public BootcampState BootcampState { get; set; }
     }
 }

@@ -16,6 +16,7 @@ using Business.Responses.BootcampState;
 using Business.Responses.Employee;
 using Business.Responses.Instructor;
 using Business.Responses.User;
+using Core.Utilities.Security.Entities;
 using Entities.Concretes;
 using System;
 using System.Collections.Generic;

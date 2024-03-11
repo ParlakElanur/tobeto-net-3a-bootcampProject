@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Entities.Concretes
 {
-    public class Application:BaseEntity<int>
+    public class Application : BaseEntity<int>
     {
         public int ApplicantId { get; set; }
         public int BootcampId { get; set; }
@@ -17,8 +17,9 @@ namespace Entities.Concretes
         {
 
         }
-        public Application(int applicantId, int bootcampId, int applicationStateId)
+        public Application(int id, int applicantId, int bootcampId, int applicationStateId) : this()
         {
+            Id = id;
             ApplicantId = applicantId;
             BootcampId = bootcampId;
             ApplicationStateId = applicationStateId;

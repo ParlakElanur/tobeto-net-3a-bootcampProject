@@ -6,7 +6,11 @@ using Business.Rules;
 using Core.Aspect.Autofac.Logging;
 using Core.CrossCuttingConcerns.Logging.Serilog.Loggers;
 using Core.Utilities.Results;
+using Core.Utilities.Security.Entities;
+using Core.Utilities.Security.Hashing;
+using Core.Utilities.Security.JWT;
 using DataAccess.Abstracts;
+using DataAccess.Concretes.Repositories;
 using Entities.Concretes;
 using System;
 using System.Collections.Generic;
@@ -56,7 +60,8 @@ namespace Business.Concretes
             applicant.LastName = request.LastName;
             applicant.DateOfBirth = request.DateOfBirth;
             applicant.Email = request.Email;
-            applicant.Password = request.Password;
+            applicant.PasswordHash = request.PasswordHash;
+            applicant.PasswordSalt = request.PasswordSalt;
             applicant.About = request.About;
             await _applicantRepository.UpdateAsync(applicant);
 

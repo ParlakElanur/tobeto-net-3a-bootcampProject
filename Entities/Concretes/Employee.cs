@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core.Utilities.Security.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,8 +14,7 @@ namespace Entities.Concretes
         {
             
         }
-
-        public Employee(string position)
+        public Employee(string position):this()
         {
             Position = position;
         }

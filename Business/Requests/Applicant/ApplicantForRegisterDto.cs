@@ -4,18 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Business.Requests.Instructor
+namespace Business.Requests.Applicant
 {
-    public class UpdateInstructorRequest
-    {
-        public int Id { get; set; }
+    public class ApplicantForRegisterDto
+    { 
         public string UserName { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string Email { get; set; }
-        public byte[] PasswordHash { get; set; }
-        public byte[] PasswordSalt { get; set; }
-        public string CompanyName { get; set; }
+        public string Password { get; set; }
+        
     }
 }

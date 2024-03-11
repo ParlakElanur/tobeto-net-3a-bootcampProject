@@ -13,11 +13,12 @@ namespace Entities.Concretes
 
         public ApplicationState()
         {
-            Applications=new HashSet<Application>();
+            Applications = new HashSet<Application>();
         }
 
-        public ApplicationState(string name)
+        public ApplicationState(int id, string name) : this()
         {
+            Id = id;
             Name = name;
         }
         public ICollection<Application> Applications { get; set; }

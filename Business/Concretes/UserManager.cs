@@ -2,8 +2,8 @@
 using Business.Abstracts;
 using Business.Responses.User;
 using Core.Utilities.Results;
+using Core.Utilities.Security.Entities;
 using DataAccess.Abstracts;
-using Entities.Concretes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +34,10 @@ namespace Business.Concretes
             List<GetAllUserResponse> getAllUsers = _mapper.Map<List<GetAllUserResponse>>(users);
 
             return new SuccessDataResult<List<GetAllUserResponse>>(getAllUsers, "Listed successfully");
+        }
+        public async Task<DataResult<User>> GetByMailAsync(string email)
+        {
+            return new SuccessDataResult<User>(await _userRepository.GetAsync(u => u.Email == email));
         }
     }
 }

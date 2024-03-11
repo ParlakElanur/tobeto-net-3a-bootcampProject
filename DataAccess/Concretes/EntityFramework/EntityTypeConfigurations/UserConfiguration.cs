@@ -1,4 +1,4 @@
-﻿using Entities.Concretes;
+﻿using Core.Utilities.Security.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -15,16 +15,19 @@ namespace DataAccess.Concretes.EntityFramework.EntityTypeConfigurations
         {
             builder.ToTable("Users").HasKey("Id");
 
-            builder.Property(i => i.Id).HasColumnName("Id");
-            builder.Property(i => i.CreatedDate).HasColumnName("CreatedDate");
-            builder.Property(i => i.UpdatedDate).HasColumnName("UpdatedDate");
-            builder.Property(i => i.DeletedDate).HasColumnName("DeletedDate");
-            builder.Property(i => i.UserName).HasColumnName("UserName");
-            builder.Property(i => i.FirstName).HasColumnName("FirstName");
-            builder.Property(i => i.LastName).HasColumnName("LastName");
-            builder.Property(i => i.DateOfBirth).HasColumnName("DateOfBirth");
-            builder.Property(i => i.Email).HasColumnName("Email");
-            builder.Property(i => i.Password).HasColumnName("Password");
+            builder.Property(u => u.Id).HasColumnName("Id");
+            builder.Property(u => u.CreatedDate).HasColumnName("CreatedDate");
+            builder.Property(u => u.UpdatedDate).HasColumnName("UpdatedDate");
+            builder.Property(u => u.DeletedDate).HasColumnName("DeletedDate");
+            builder.Property(u => u.UserName).HasColumnName("UserName");
+            builder.Property(u => u.FirstName).HasColumnName("FirstName");
+            builder.Property(u => u.LastName).HasColumnName("LastName");
+            builder.Property(u => u.DateOfBirth).HasColumnName("DateOfBirth");
+            builder.Property(u => u.Email).HasColumnName("Email");
+            builder.Property(u => u.PasswordHash).HasColumnName("PasswordHash");
+            builder.Property(u => u.PasswordSalt).HasColumnName("PasswordSalt");
+
+            builder.HasMany(u => u.UserOperationClaims);
         }
     }
 }

@@ -16,8 +16,9 @@ namespace Entities.Concretes
             Bootcamps=new HashSet<Bootcamp>();
         }
 
-        public BootcampState(string name)
+        public BootcampState(int id,string name):this()
         {
+            Id= id;
             Name = name;
         }
         public ICollection<Bootcamp> Bootcamps { get; set; }
