@@ -47,16 +47,13 @@ namespace Business.Concretes
 
         public async Task<DataResult<AccessToken>> Login(UserForLoginDto userForLoginDto)
         {
-            var user = _userService.GetByMailAsync(userForLoginDto.Email);
-            //Task<DataResult<User>> u = _userService.GetByMailAsync(userForLoginDto.Email);
-            //u.Data=
+            var user = await _userService.GetByMailAsync(userForLoginDto.Email);
+            await _rules.UserShouldBeExists(user.Data);
+            await _rules.UserEmailShouldBeExists(userForLoginDto.Email);
+            await _rules.UserPasswordShouldBeMatch(user.Data.Id, userForLoginDto.Password);
+            var createAccessToken = await CreateAccessToken(user.Data);
 
-            //await _rules.UserShouldBeExists(user.Data);
-            //await _rules.UserEmailShouldBeExists(userForLoginDto.Email);
-            //await _rules.UserPasswordShouldBeMatch(user.Data.Id, userForLoginDto.Password);
-            //var createAccessToken =await CreateAccessToken(user.Data);
-            //return SuccessDataResult<AccessToken>(createAccessToken.Data, "Login Success");
-            return null;
+            return new SuccessDataResult<AccessToken>(createAccessToken.Data, "Login Success");
         }
 
         public async Task<DataResult<AccessToken>> RegisterApplicant(ApplicantForRegisterDto applicantForRegisterDto)
