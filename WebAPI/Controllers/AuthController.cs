@@ -20,15 +20,13 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> Register(ApplicantForRegisterDto applicantForRegisterDto)
         {
             var result = await _authService.RegisterApplicant(applicantForRegisterDto);
-            //return await HandleDataResult(result);
-            return null;
+            return HandleDataResult(result);
         }
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserForLoginDto userForLoginDto)
         {
             var result = await _authService.Login(userForLoginDto);
-            //return await HandleDataResult(result);
-            return null;
+            return HandleDataResult(result);
         }
 
     }
